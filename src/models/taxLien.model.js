@@ -3,18 +3,18 @@ const sequelize = require("../db/connection");
 const validator = require("validator");
 
 /**
- * @typedef Taxlien
+ * @typedef TaxLien
  */
 
-class Taxlien extends Model {}
+class TaxLien extends Model {}
 
-Taxlien.init(
+TaxLien.init(
   {
     startDate: {
-      type: DataTypes.DATE(),
+      type: DataTypes.DATE,
     },
     endDate: {
-      type: DataTypes.DATE(),
+      type: DataTypes.DATE,
     },
     state: {
       type: DataTypes.STRING(2),
@@ -61,25 +61,25 @@ Taxlien.init(
       field: "taxCollectorLink",
     },
     faceValue: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     caseNumber: {
       type: DataTypes.STRING(32),
     },
     assessedValue: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     landValue: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     buildingValue: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     lienToland: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     lienToValue: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     address: {
       type: DataTypes.STRING(32),
@@ -88,28 +88,28 @@ Taxlien.init(
       type: DataTypes.ENUM("string"),
     },
     zip: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     state: {
       type: DataTypes.ENUM("string"),
     },
     certPercentage: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     acres: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     buildingSqFeet: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     beds: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     baths: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
   },
   { sequelize }
 );
 
-module.exports = Taxlien;
+module.exports = TaxLien;
