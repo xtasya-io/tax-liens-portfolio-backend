@@ -1,35 +1,3 @@
-// /* TODO
-// Create a TaxLien model with the following attributes
-// - category: String
-// - startDate: date
-// - endDate: date
-// - state: String
-// - county: String
-// - auction: String
-// - parcel: String
-// - type: String
-// - bidProcedure: String
-// - phone: String
-// - email: String
-// - appraiserLink: String
-// - taxCollectorLink: String
-// - faceValue: Number
-// - caseNumbe: String
-// - assessedValue: Number
-// - landValue: number
-// - buildingValue: Number
-// - lienToLand: Number
-// - lienToValue: Number
-// - address: String
-// - city: String // TODO: transform to enum
-// - zip: number
-// - state: String // TODO: transform to enum
-// - certPercentage: Number
-// - acres: Number
-// - buildingSqFeet: Number
-// - beds: Number
-// - baths: Number
-// */
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../db/connection");
 const validator = require("validator");
@@ -45,49 +13,47 @@ Taxlien.init(
     startDate: {
       type: DataTypes.DATE(),
     },
-    startDate: {
+    endDate: {
       type: DataTypes.DATE(),
     },
     state: {
-      type: DataTypes.STRING(32),
-      allowNull: false,
+      type: DataTypes.STRING(2),
+
       field: "state",
     },
     county: {
       type: DataTypes.STRING(32),
-      allowNull: false,
+
       field: "county",
     },
     auction: {
       type: DataTypes.STRING(32),
-      allowNull: false,
+
       field: "auction",
     },
     parcel: {
       type: DataTypes.STRING(32),
-      allowNull: false,
+
       field: "parcel",
     },
     type: {
       type: DataTypes.STRING(32),
-      allowNull: false,
+
       field: "type",
     },
     bidProcedure: {
       type: DataTypes.STRING(32),
-      allowNull: false,
+
       field: "bidProcedure",
     },
     email: {
-      type: DataTypes.STRING(64),
-      allowNull: false,
+      type: DataTypes.STRING(32),
     },
     phone: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(13),
     },
     appraiserLink: {
       type: DataTypes.STRING(32),
-      allowNull: false,
     },
     taxCollectorLink: {
       type: DataTypes.STRING(32),
@@ -97,9 +63,8 @@ Taxlien.init(
     faceValue: {
       type: DataTypes.NUMBER,
     },
-    caseNumbe: {
+    caseNumber: {
       type: DataTypes.STRING(32),
-      allowNull: false,
     },
     assessedValue: {
       type: DataTypes.NUMBER,
