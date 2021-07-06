@@ -3,14 +3,18 @@ const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
 
 module.exports = {
-  getAllTaxLiens: catchAsync(async (req, res) => {
+  getTaxLiens: catchAsync(async (req, res) => {
+    console.log("HEELOOOOO");
     let taxLiens = await taxLiensService.getTaxLiens();
+    console.log(taxLiens);
     res.status(httpStatus.OK).send(taxLiens);
   }),
+
   createTaxLien: catchAsync(async (req, res) => {
     let taxLien = await taxLiensService.createTaxLien(req.body);
-    if (category) res.status(httpStatus.OK).send(taxLien.data);
+    if (taxLien) res.status(httpStatus.OK).send(taxLien.data);
   }),
+
   updateTaxLien: catchAsync(async (req, res) => {
     let taxLien = await taxLiensService.updateTaxLien(
       req.params.taxLienId,
