@@ -15,4 +15,30 @@ module.exports = {
       { attributes: attributes }
     );
   },
+  /**
+   * Create a new Taxliens
+   * @param {object}
+   * @returns {Promise<TaxLien>}
+   */
+  createTaxLien: async (data) => {
+    return repository.create(TaxLien, data);
+  },
+
+  /**
+   * Update TaxLiens
+   * @param {string} taxLienId
+   * @param {object} taxLienData
+   * @returns {Promise<TaxLien>}
+   */
+  updateTaxLien: async (taxLienId, taxLienData) => {
+    return repository.update(TaxLien, { id: taxLienId }, taxLienData);
+  },
+  /**
+   * Delete a TaxLiens
+   * @param {string} taxLienId
+   * @returns {Promise<number>}
+   */
+  deleteTaxLien: async (taxLienId) => {
+    return repository.delete(TaxLien, { id: taxLienId });
+  },
 };
