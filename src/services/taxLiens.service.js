@@ -41,4 +41,13 @@ module.exports = {
   deleteTaxLien: async (taxLienId) => {
     return repository.delete(TaxLien, { id: taxLienId });
   },
+
+  /**
+   * Get one TaxLien by id
+   * @param {string} taxLienId
+   * @returns {Promise<TaxLien>}
+   */
+  getTaxLienById: async (taxLienId) => {
+    return repository.findOne(TaxLien, { id: taxLienId })
+  }
 };
