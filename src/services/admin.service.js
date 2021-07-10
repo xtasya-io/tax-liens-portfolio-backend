@@ -1,6 +1,6 @@
-const Admin = require("../models/admin.model");
 const httpStatus = require("http-status");
 const bcrypt = require("bcryptjs")
+const { Admin } = require("../models")
 
 
 /**
@@ -18,6 +18,7 @@ const getAdminByEmail = async (email) => {
  * @returns {Promise<Admin>}
  */
 const createAdmin = async (adminData) => {
+    console.log(Admin)
     const freeEmail = await Admin.isEmailTaken(adminData.email)
     if (freeEmail) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
