@@ -10,85 +10,37 @@ class TaxLien extends Model {}
 
 TaxLien.init(
   {
-    // startDate: {
-    //   type: DataTypes.DATE,
-    // },
-    // endDate: {
-    //   type: DataTypes.DATE,
-    // },
+    purchaseDate: {
+      type: DataTypes.DATE,
+    },
+    state: {
+      type: DataTypes.STRING(10),
+    },
     county: {
       type: DataTypes.STRING(32),
     },
-    // auction: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // parcel: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // type: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // bidProcedure: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // email: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // phone: {
-    //   type: DataTypes.STRING(13),
-    // },
-    // appraiserLink: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // taxCollectorLink: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // faceValue: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // caseNumber: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // assessedValue: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // landValue: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // buildingValue: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // lienToland: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // lienToValue: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // address: {
-    //   type: DataTypes.STRING(32),
-    // },
-    // city: {
-    //   type: DataTypes.ENUM("string"),
-    // },
-    zip: {
+    certificateNumber: {
       type: DataTypes.INTEGER,
     },
-    // state: {
-    //   type: DataTypes.ENUM("string"),
-    // },
-    // certPercentage: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // acres: {
-    //   type: DataTypes.INTEGER,
-    // },
-    // buildingSqFeet: {
-    //   type: DataTypes.INTEGER,
-    // },
-    beds: {
+    propertyType: {
+      type: DataTypes.STRING(15),
+    },
+    auctionInterest: {
       type: DataTypes.INTEGER,
     },
-    baths: {
+    premium: {
+      type: DataTypes.INTEGER,
+    },
+    investedAmount: {
+      type: DataTypes.INTEGER,
+    },
+    monthlyProfitability: {
+      type: DataTypes.INTEGER,
+    },
+    profit: {
+      type: DataTypes.INTEGER,
+    },
+    profitability: {
       type: DataTypes.INTEGER,
     },
   },

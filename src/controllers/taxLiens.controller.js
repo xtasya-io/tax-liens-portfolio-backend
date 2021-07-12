@@ -1,6 +1,7 @@
 const { taxLiensService } = require("../services");
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
+const { TaxLien } = require("../models");
 
 module.exports = {
   getTaxLiens: catchAsync(async (req, res) => {
@@ -17,14 +18,14 @@ module.exports = {
 
   updateTaxLien: catchAsync(async (req, res) => {
     let taxLien = await taxLiensService.updateTaxLien(
-      req.params.taxLienId,
+      req.params.id,
       req.body
     );
     if (taxLien) res.status(httpStatus.OK).send(taxLien);
   }),
 
   deleteTaxLien: catchAsync(async (req, res) => {
-    let deleted = await taxLiensService.deleteTaxLien(req.params.taxLienId);
-    if (deleted > 0) res.status(httpStatus.OK).json({ message: "Deleted" });
+    let deleted = await taxLiensService.deleteTaxLien(req.params.id);
+    if (deleted > 0) res.status(204).json({ message: "Deleted" });
   }),
 };
