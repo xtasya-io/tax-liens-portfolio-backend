@@ -37,7 +37,7 @@ app.use("/api", routes);
 
 // Payment
 
-app.use('/v1/checkout',stripeRoutes)
+app.use('/api/stripe',stripeRoutes)
 
 const _clientDir = "client/build";
 
