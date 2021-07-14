@@ -40,6 +40,7 @@
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
+    "stripe": "^8.161.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {

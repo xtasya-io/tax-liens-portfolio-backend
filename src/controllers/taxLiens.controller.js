@@ -1,11 +1,9 @@
 const { taxLiensService } = require("../services");
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
-const { TaxLien } = require("../models");
 
 module.exports = {
   getTaxLiens: catchAsync(async (req, res) => {
-    console.log("HEELOOOOO");
     let taxLiens = await taxLiensService.getTaxLiens();
     console.log(taxLiens);
     res.status(httpStatus.OK).send(taxLiens);
