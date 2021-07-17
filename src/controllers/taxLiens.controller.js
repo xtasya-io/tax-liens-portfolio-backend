@@ -4,15 +4,11 @@ const httpStatus = require("http-status");
 const { TaxLien } = require("../models");
 
 module.exports = {
-  getAllTaxLiens: catchAsync(async (req, res) => {
+  getTaxLiens: catchAsync(async (req, res) => {
+    console.log("HEELOOOOO");
     let taxLiens = await taxLiensService.getTaxLiens();
+    console.log(taxLiens);
     res.status(httpStatus.OK).send(taxLiens);
-  }),
-
-  getTaxLienById: catchAsync(async (req, res) => {
-    let taxLien = await taxLiensService.getTaxLienById(req.params.id);
-    console.log(taxLien)
-    res.status(httpStatus.OK).send(taxLien)
   }),
 
   createTaxLien: catchAsync(async (req, res) => {

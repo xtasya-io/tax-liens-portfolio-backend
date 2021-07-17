@@ -17,7 +17,7 @@ const sequelize = new Sequelize(
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
     // Synchronizing Tables
-    await sequelize.sync({ force: true });
+    await sequelize.sync({});
     console.log("Tables synchronized successfully.");
   } catch (error) {
     console.error(error);
