@@ -21,10 +21,10 @@ TaxLien.init(
     certificate: {
       type: DataTypes.INTEGER,
     },
-    auctionInterest: {
+    interest: {
       type: DataTypes.INTEGER,
     },
-    investedAmount: {
+    investment: {
       type: DataTypes.INTEGER,
     },
     categoryId: {

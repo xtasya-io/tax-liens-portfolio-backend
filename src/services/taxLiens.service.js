@@ -20,8 +20,17 @@ module.exports = {
    * @param {object}
    * @returns {Promise<TaxLien>}
    */
-  createTaxLien: async (data) => {
-    return repository.create(TaxLien, data);
+  createTaxLien: async ({ purchaseDate, state, county, certificate, interest, propertyType, investment, userId }) => {
+    return repository.create(TaxLien, {
+      purchaseDate: purchaseDate,
+      state: state,
+      county: county,
+      certificate: certificate,
+      interest: interest,
+      investment: investment,
+      categoryId: propertyType,
+      userId: userId
+    });
   },
 
   /**
