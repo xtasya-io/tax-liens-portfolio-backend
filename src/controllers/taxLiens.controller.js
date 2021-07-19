@@ -1,30 +1,46 @@
 const { taxLiensService } = require("../services");
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
-const { TaxLien } = require("../models");
+
+const getTaxLiens = catchAsync(async (req, res) => {
+  let taxLiens = await taxLiensService.getTaxLiens();
+  res.status(httpStatus.OK).send(taxLiens);
+})
+
+const getTaxLienById = catchAsync(async (req, res) => {
+  let taxLien = await taxLiensService.getTaxLienById(req.params.id)
+  res.status(httpStatus.OK).send(taxLien);
+})
+
+const createTaxLien = catchAsync(async (req, res) => {
+  let taxLien = await taxLiensService.createTaxLien(req.body);
+  if (taxLien) res.status(httpStatus.OK).send(taxLien.data);
+})
+
+const updateTaxLien = catchAsync(async (req, res) => {
+  let taxLien = await taxLiensService.updateTaxLien(
+    req.params.id,
+    req.body
+  );
+  if (taxLien) res.status(httpStatus.OK).send(taxLien);
+})
+
+const deleteTaxLien = catchAsync(async (req, res) => {
+  let deleted = await taxLiensService.deleteTaxLien(req.params.id);
+  if (deleted > 0) res.status(204).json({ message: "Deleted" });
+})
+
+const getTaxLiensByUser = catchAsync(async (req, res) => {
+  let userId = req.params.id;
+  let taxLiens = await taxLiensService.getTaxLiens({ userId: userId })
+  res.status(httpStatus.OK).json({ count: taxLiens.length, rows: taxLiens })
+})
 
 module.exports = {
-  getTaxLiens: catchAsync(async (req, res) => {
-    let taxLiens = await taxLiensService.getTaxLiens();
-    console.log(taxLiens);
-    res.status(httpStatus.OK).send(taxLiens);
-  }),
-
-  createTaxLien: catchAsync(async (req, res) => {
-    let taxLien = await taxLiensService.createTaxLien(req.body);
-    if (taxLien) res.status(httpStatus.OK).send(taxLien.data);
-  }),
-
-  updateTaxLien: catchAsync(async (req, res) => {
-    let taxLien = await taxLiensService.updateTaxLien(
-      req.params.id,
-      req.body
-    );
-    if (taxLien) res.status(httpStatus.OK).send(taxLien);
-  }),
-
-  deleteTaxLien: catchAsync(async (req, res) => {
-    let deleted = await taxLiensService.deleteTaxLien(req.params.id);
-    if (deleted > 0) res.status(204).json({ message: "Deleted" });
-  }),
-};
+  getTaxLiens,
+  getTaxLienById,
+  createTaxLien,
+  updateTaxLien,
+  deleteTaxLien,
+  getTaxLiensByUser
+}
