@@ -31,7 +31,9 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
     "encrypt": "0.0.1",
     "express": "^4.17.1",
     "formik": "^2.2.8",
