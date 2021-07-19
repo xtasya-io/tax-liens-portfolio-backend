@@ -1,12 +1,11 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../db/connection");
-const validator = require("validator");
 
 /**
  * @typedef TaxLien
  */
 
-class TaxLien extends Model {}
+class TaxLien extends Model { }
 
 TaxLien.init(
   {
@@ -14,35 +13,38 @@ TaxLien.init(
       type: DataTypes.DATE,
     },
     state: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(2),
     },
     county: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(64),
     },
-    certificateNumber: {
+    certificate: {
       type: DataTypes.INTEGER,
     },
-    propertyType: {
-      type: DataTypes.STRING(15),
-    },
-    auctionInterest: {
+    interest: {
       type: DataTypes.INTEGER,
     },
-    premium: {
+    investment: {
       type: DataTypes.INTEGER,
     },
-    investedAmount: {
+    categoryId: {
       type: DataTypes.INTEGER,
     },
-    monthlyProfitability: {
+    userId: {
       type: DataTypes.INTEGER,
     },
-    profit: {
-      type: DataTypes.INTEGER,
-    },
-    profitability: {
-      type: DataTypes.INTEGER,
-    },
+    // premium: {
+    //   type: DataTypes.INTEGER,
+    // },
+    // monthlyProfitability: {
+    //   type: DataTypes.INTEGER,
+    // },
+    // profit: {
+    //   type: DataTypes.INTEGER,
+    // },
+    // profitability: {
+    //   type: DataTypes.INTEGER,
+    // },
   },
   { sequelize }
 );
