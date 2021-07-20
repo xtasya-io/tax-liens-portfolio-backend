@@ -1,17 +1,15 @@
-const { Admin, User, TaxLien, Category } = require("../models");
+const { User, TaxLien, Category } = require("../models");
 
 module.exports = () => {
 
     Category.hasMany(TaxLien, {
-        foreignKey: 'categoryId'
+        foreignKey: 'category'
     })
-
     TaxLien.belongsTo(Category)
 
     User.hasMany(TaxLien, {
-        foreignKey: "userId"
+        foreignKey: "user"
     })
-
     TaxLien.belongsTo(User)
 
 }

@@ -20,8 +20,10 @@ const sequelize = new Sequelize(
     await sequelize.sync({});
     console.log("Tables synchronized successfully.");
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 })();
+
+// associations()
 
 module.exports = sequelize;
