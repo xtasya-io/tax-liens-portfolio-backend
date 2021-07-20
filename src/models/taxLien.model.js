@@ -27,10 +27,10 @@ TaxLien.init(
     investment: {
       type: DataTypes.INTEGER,
     },
-    categoryId: {
+    category: {
       type: DataTypes.INTEGER,
     },
-    userId: {
+    user: {
       type: DataTypes.INTEGER,
     },
     // premium: {

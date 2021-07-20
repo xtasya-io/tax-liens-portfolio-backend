@@ -28,8 +28,8 @@ module.exports = {
       certificate: certificate,
       interest: interest,
       investment: investment,
-      categoryId: propertyType,
-      userId: userId
+      category: propertyType,
+      user: userId
     });
   },
 
