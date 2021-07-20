@@ -14,7 +14,7 @@ const getTaxLienById = catchAsync(async (req, res) => {
 
 const createTaxLien = catchAsync(async (req, res) => {
   let taxLien = await taxLiensService.createTaxLien(req.body);
-  if (taxLien) res.status(httpStatus.OK).send(taxLien.data);
+  res.status(httpStatus.OK).send(taxLien.data);
 })
 
 const updateTaxLien = catchAsync(async (req, res) => {
@@ -22,7 +22,7 @@ const updateTaxLien = catchAsync(async (req, res) => {
     req.params.id,
     req.body
   );
-  if (taxLien) res.status(httpStatus.OK).send(taxLien);
+  res.status(httpStatus.OK).send(taxLien);
 })
 
 const deleteTaxLien = catchAsync(async (req, res) => {
@@ -32,8 +32,11 @@ const deleteTaxLien = catchAsync(async (req, res) => {
 
 const getTaxLiensByUser = catchAsync(async (req, res) => {
   let userId = req.params.id;
-  let taxLiens = await taxLiensService.getTaxLiens({ userId: userId })
-  res.status(httpStatus.OK).json({ count: taxLiens.length, rows: taxLiens })
+  let taxLiens = await taxLiensService.getTaxLiens(
+    { userId: userId },
+    // { exclude: ["userId", "createdAt", "updatedAt"] }
+  )
+  res.status(httpStatus.OK).json(taxLiens)
 })
 
 module.exports = {

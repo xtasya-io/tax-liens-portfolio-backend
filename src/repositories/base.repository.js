@@ -9,7 +9,7 @@ module.exports = {
     },
 
     findOne: (model, filter, attributes) => {
-        return model.findOne({ where: filter }, { attributes: [attributes] })
+        return model.findOne({ where: filter }, { attributes: attributes })
     },
 
     create: (model, data) => {

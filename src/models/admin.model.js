@@ -12,9 +12,9 @@ class Admin extends Model {
      * @param {string} password
      * @returns {Promise<boolean>}
      */
-    // isPasswordMatch = function (password) {
-    //     return bcrypt.compare(password, this.password);
-    // };
+    isPasswordMatch = function (password) {
+        return bcrypt.compare(password, this.password);
+    };
 
 }
 

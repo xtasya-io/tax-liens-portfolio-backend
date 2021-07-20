@@ -1,4 +1,4 @@
-const { Admin, User, TaxLien, Category } = require("../models");
+const { User, TaxLien, Category } = require("../models");
 
 module.exports = () => {
 

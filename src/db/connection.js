@@ -24,4 +24,6 @@ const sequelize = new Sequelize(
   }
 })();
 
+// associations()
+
 module.exports = sequelize;
