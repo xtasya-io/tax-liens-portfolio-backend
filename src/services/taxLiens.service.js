@@ -8,7 +8,10 @@ module.exports = {
    * @param {Array<string>} attributes
    * @returns {Promise<{count: number, rows: TaxLien[]}>}
    */
-  getTaxLiens: async (filter = {}, attributes = ["purchaseDate", "state", "county", "certificate", "interest", "investment"]) => {
+  getTaxLiens: async (
+    filter = {},
+    attributes = ["purchaseDate", "state", "county", "certificate", "interest", "investment"]
+  ) => {
     return TaxLien.findAndCountAll({
       where: filter,
       attributes,
