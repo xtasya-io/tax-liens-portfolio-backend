@@ -22,6 +22,8 @@ const loginWithEmailAndPassword = async (email, password, type) => {
         if (!(await user.isPasswordMatch(password))) throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect password');
         if (user.isBanned) throw new ApiError(httpStatus.UNAUTHORIZED, 'The user is Banned')
         return user;
+    } else {
+        throw new Error(httpStatus.NOT_ACCEPTABLE, 'Type is required')
     }
 };
 

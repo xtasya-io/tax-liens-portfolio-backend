@@ -1,10 +1,20 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('../db/connection');
+const bcrypt = require("bcryptjs")
 
 /**
  * @typedef User
  */
-class User extends Model { }
+class User extends Model {
+    /**
+     * Check if password matches the admin's password
+     * @param {string} password
+     * @returns {Promise<boolean>}
+     */
+    isPasswordMatch = function (password) {
+        return bcrypt.compare(password, this.password);
+    };
+}
 
 /**
  * Check if email is taken
