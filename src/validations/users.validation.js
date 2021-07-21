@@ -24,10 +24,7 @@ module.exports.createUserSchema = {
                 // Regex option
                 const nameRegex = /^[A-zÀ-ÿ- ]+$/;
 
-                if (firstName.match(nameRegex)) {
-                    return true;
-                }
-                return false;
+                return !!firstName.match(nameRegex)
             },
             errorMessage: "First name should be alphabetic",
         },
@@ -66,6 +63,9 @@ module.exports.createUserSchema = {
     //     },
     // },
     password: {
+        exists: {
+            errorMessage: "No password provided"
+        },
         isLength: {
             errorMessage: "Password is too short",
             options: { min: 8 },
