@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 
 const errorFormatter = ({ msg, param }) => ({
     code: 'is_invalid',

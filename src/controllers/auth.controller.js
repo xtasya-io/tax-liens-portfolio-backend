@@ -1,6 +1,7 @@
 require('dotenv').config()
 
-const { tokenService, authService } = require("../services");
+const httpStatus = require('http-status');
+const { tokenService, authService, usersService } = require("../services");
 const catchAsync = require("../utils/catchAsync");
 
 
@@ -12,7 +13,8 @@ const login = catchAsync(async (req, res) => {
 })
 
 const registerUser = catchAsync(async (req, res) => {
-    console.log(".....")
+    await usersService.createUser(req.body)
+    res.status(httpStatus.CREATED).end()
 })
 
 module.exports = { login, registerUser }

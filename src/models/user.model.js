@@ -6,6 +6,17 @@ const sequelize = require('../db/connection');
  */
 class User extends Model { }
 
+/**
+ * Check if email is taken
+ * @param {string} email - The new user's email
+ * @param {ObjectId} [excludeUserId] - The id of the admin to be excluded
+ * @returns {Promise<boolean>}
+ */
+User.isEmailTaken = async function (email, excludeUserId) {
+    const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+    return !!user;
+};
+
 User.init(
     {
         email: {

@@ -1,5 +1,7 @@
+require("dotenv").config()
 const { User } = require("../models");
 const repository = require("../repositories/base.repository");
+const bcrypt = require("bcryptjs")
 
 
 /**
@@ -37,7 +39,15 @@ const getUserByEmail = async (email) => {
  * @returns {Promise<User>}
  */
 const createUser = async (userData) => {
-    console.log("Creating user ...")
+    let { firstName, lastName, email, password } = userData
+    // if (User.isEmailTaken(email)) throw Error("User already exists")
+    password = await bcrypt.hash(password, 10)
+    return User.create({
+        firstName,
+        lastName,
+        email,
+        password
+    })
 }
 
-module.exports = { getUsers, updateuser, getUserByEmail }
+module.exports = { getUsers, updateuser, getUserByEmail, createUser }
