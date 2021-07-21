@@ -31,9 +31,8 @@ const deleteTaxLien = catchAsync(async (req, res) => {
 })
 
 const getTaxLiensByUser = catchAsync(async (req, res) => {
-  let userId = req.params.id;
   let taxLiens = await taxLiensService.getTaxLiens(
-    { userId: userId },
+    { user: req.params.id },
     // { exclude: ["userId", "createdAt", "updatedAt"] }
   )
   res.status(httpStatus.OK).json(taxLiens)

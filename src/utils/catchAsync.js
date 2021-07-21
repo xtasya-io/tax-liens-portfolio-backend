@@ -9,6 +9,7 @@ const catchAsync = (fn) => (req, res, next) => {
             message,
             ...({ stack: err.stack }),
         };
+        console.log(err.stack)
         res.status(statusCode).send(response)
     });
 };
