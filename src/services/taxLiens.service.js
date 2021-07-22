@@ -17,7 +17,6 @@ module.exports = {
       attributes,
       include: [{ model: Category, attributes: ["title", "code"] }]
     })
-    console.log(taxliens)
     return taxliens
   },
   /**
@@ -63,5 +62,23 @@ module.exports = {
    */
   getTaxLienById: async (taxLienId) => {
     return repository.findOne(TaxLien, { id: taxLienId })
+  },
+
+  /**
+   * Mark TaxLien as active
+   * @param {string} taxLienId
+   * @returns {Promise<TaxLien>}
+   */
+  markTaxlienAsActive: async (taxLienId) => {
+    return TaxLien.update({ status: "active" }, { where: { id: taxLienId } })
+  },
+
+  /**
+   * Mark TaxLien as overdue
+   * @param {string} taxLienId
+   * @returns {Promise<TaxLien>}
+   */
+  markTaxlienAsOverdue: async (taxLienId) => {
+    return TaxLien.update({ status: "overdue" }, { where: { id: taxLienId } })
   }
 };
