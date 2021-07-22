@@ -1,5 +1,6 @@
 const { TaxLien, Category } = require("../models");
 const repository = require("../repositories/base.repository");
+const states = require("../data/states.json")
 
 module.exports = {
   /**
@@ -10,13 +11,15 @@ module.exports = {
    */
   getTaxLiens: async (
     filter = {},
-    attributes = ["purchaseDate", "state", "county", "certificate", "interest", "investment"]
+    attributes = ["id", "purchaseDate", "state", "county", "certificate", "interest", "investment"]
   ) => {
-    return TaxLien.findAndCountAll({
+    let taxliens = await TaxLien.findAll({
       where: filter,
       attributes,
       include: [{ model: Category, attributes: ["title", "code"] }]
-    });
+    })
+    console.log(taxliens)
+    return taxliens
   },
   /**
    * Create a new Taxliens
