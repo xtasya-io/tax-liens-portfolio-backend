@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require('../db/connection');
-const validator = require("validator")
+const validator = require("validator");
 
 /**
  * @typedef Category
@@ -36,7 +36,8 @@ Category.init(
             unique: true
         },
 
-    }, 
-    { sequelize })
+    },
+    { sequelize }
+)
 
 module.exports = Category;

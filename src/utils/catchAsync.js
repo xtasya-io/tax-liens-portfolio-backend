@@ -2,15 +2,14 @@ const httpStatus = require("http-status")
 
 const catchAsync = (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch((err) => {
-        const statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-        const message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
+        const statusCode = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
+        const message = err.message || httpStatus[statusCode];
         const response = {
             code: statusCode,
             message,
             ...({ stack: err.stack }),
         };
-        console.error(err)
-        console.log(res)
+        console.log(err.stack)
         res.status(statusCode).send(response)
     });
 };

@@ -1,4 +1,4 @@
-const { TaxLien } = require("../models");
+const { TaxLien, Category } = require("../models");
 const repository = require("../repositories/base.repository");
 
 module.exports = {
@@ -8,20 +8,32 @@ module.exports = {
    * @param {Array<string>} attributes
    * @returns {Promise<{count: number, rows: TaxLien[]}>}
    */
-  getTaxLiens: async (filter = {}, attributes = []) => {
-    return repository.find(
-      TaxLien,
-      { where: filter },
-      { attributes: attributes }
-    );
+  getTaxLiens: async (
+    filter = {},
+    attributes = ["purchaseDate", "state", "county", "certificate", "interest", "investment"]
+  ) => {
+    return TaxLien.findAndCountAll({
+      where: filter,
+      attributes,
+      include: [{ model: Category, attributes: ["title", "code"] }]
+    });
   },
   /**
    * Create a new Taxliens
    * @param {object}
    * @returns {Promise<TaxLien>}
    */
-  createTaxLien: async (data) => {
-    return repository.create(TaxLien, data);
+  createTaxLien: async ({ purchaseDate, state, county, certificate, interest, propertyType, investment, userId }) => {
+    return repository.create(TaxLien, {
+      purchaseDate: purchaseDate,
+      state: state,
+      county: county,
+      certificate: certificate,
+      interest: interest,
+      investment: investment,
+      category: propertyType,
+      user: userId
+    });
   },
 
   /**
