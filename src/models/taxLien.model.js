@@ -33,6 +33,10 @@ TaxLien.init(
     user: {
       type: DataTypes.INTEGER,
     },
+    status: {
+      type: DataTypes.ENUM(["active", "overdue"]),
+      defaultValue: "active"
+    }
     // premium: {
     //   type: DataTypes.INTEGER,
     // },

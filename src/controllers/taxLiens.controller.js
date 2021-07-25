@@ -38,11 +38,23 @@ const getTaxLiensByUser = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(taxLiens)
 })
 
+const markTaxlienAsActive = catchAsync(async (req, res) => {
+  await taxLiensService.markTaxlienAsActive(req.params.id)
+  res.status(httpStatus.ACCEPTED).end()
+})
+
+const markTaxlienAsOverdue = catchAsync(async (req, res) => {
+  await taxLiensService.markTaxlienAsOverdue(req.params.id)
+  res.status(httpStatus.ACCEPTED).end()
+})
+
 module.exports = {
   getTaxLiens,
   getTaxLienById,
   createTaxLien,
   updateTaxLien,
   deleteTaxLien,
-  getTaxLiensByUser
+  getTaxLiensByUser,
+  markTaxlienAsActive,
+  markTaxlienAsOverdue
 }

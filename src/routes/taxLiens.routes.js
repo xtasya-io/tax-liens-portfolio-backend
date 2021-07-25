@@ -10,4 +10,7 @@ router.post("/", taxLiensController.createTaxLien);
 router.put("/:id", taxLiensController.updateTaxLien);
 router.delete("/:id", taxLiensController.deleteTaxLien);
 
+router.put("/active-status/:id", taxLiensController.markTaxlienAsActive);
+router.put("/overdue-status/:id", taxLiensController.markTaxlienAsOverdue);
+
 module.exports = router;
