@@ -1,7 +1,9 @@
 require("dotenv").config()
-const { User } = require("../models");
+const { User, Location } = require("../models");
+const
 const repository = require("../repositories/base.repository");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const { locationsService } = require(".");
 
 
 /**
@@ -15,13 +17,34 @@ const getUsers = async (filter = {}, attributes = ["id", "firstName", "lastName"
 }
 
 /**
- * Get attributes from Users where filter
- * @param {Object} filter
- * @param {Array<string>} attributes
- * @returns {Promise<{count: number, rows: User[]}>}
+ * Update User By id
+ * @param {Number} userId
+ * @param {Object} data
+ * @returns {Promise<User>}
  */
-const updateuser = async (id) => {
-    return repository.update(User, { id: id }, id)
+const updateUser = async (userId, { userData, locationData }) => {
+    try {
+
+        const updatedLocation = await locationsService.updateUserLocation(userId, locationData)
+
+        userData = Object.assign({
+            ...userData,
+            location: updatedLocation.id
+        })
+
+        const updatedUser = await User.update({
+            userData,
+            where: { id: userId }
+        })
+
+        return User.findOne({
+            where: { id: updatedUser.id },
+            include: [{ model: Location, as: 'location' }]
+        })
+
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 
 /**
@@ -50,4 +73,4 @@ const createUser = async (userData) => {
     })
 }
 
-module.exports = { getUsers, updateuser, getUserByEmail, createUser }
+module.exports = { getUsers, updateUser, getUserByEmail, createUser }
