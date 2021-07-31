@@ -1,12 +1,11 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../db/connection");
 const User = require("./");
-const { belongsTo } = require("./admin.model");
 
 /**
  * @typedef Subscription
  */
-class Subscription extends Model {}
+class Subscription extends Model { }
 
 /**
  * Check if payment deadline is overdue
