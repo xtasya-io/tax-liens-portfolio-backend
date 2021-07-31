@@ -2,23 +2,41 @@ const { User, TaxLien, Category, Location } = require("../models");
 
 module.exports = () => {
 
-    Category.hasMany(TaxLien, {
-        as: 'category'
-    })
+    // User to Category
+
+    Category.hasMany(TaxLien)
     TaxLien.belongsTo(Category, {
-        foreignKey: "category"
+        foreignKey: 'category'
     })
 
-    User.hasMany(TaxLien, {
-        as: "user"
+    // User to TaxLien
+
+    User.hasMany(TaxLien)
+    TaxLien.belongsTo(User, {
+        foreignKey: 'user'
     })
-    TaxLien.belongsTo(User)
+
+    // User to Location
 
     User.hasOne(Location, {
-        as: "location"
+        foreignKey: 'location',
+        constraints: false,
+        allowNull: true,
+        defaultValue: null
+    })
+    User.belongsTo(Location)
+
+    // Taxlien to Location
+
+    TaxLien.hasOne(Location, {
+        foreignKey: 'location',
+        constraints: false,
+        allowNull: true,
+        defaultValue: null
     })
     TaxLien.belongsTo(Location)
 
-    console.log("Association made successfuly")
+
+    console.log('Association made successfuly')
 
 }

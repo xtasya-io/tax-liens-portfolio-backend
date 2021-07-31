@@ -1,6 +1,5 @@
 require("dotenv").config()
 const { User, Location } = require("../models");
-const
 const repository = require("../repositories/base.repository");
 const bcrypt = require("bcryptjs");
 const { locationsService } = require(".");

@@ -1,5 +1,5 @@
 require("dotenv").config()
-const { Location } = require("../models");
+const { Location, User } = require("../models");
 
 /**
  * Get Location by user id
@@ -7,7 +7,14 @@ const { Location } = require("../models");
  * @returns {Promise<Location>}
  */
 const getUserLocation = async (userId) => {
-    return Location.findOne({ user: userId })
+    // return User.findOne({ 
+    //     where: { user: userId },
+    //     attributes: ['location'],
+
+    // })
+    return User.getLocation({
+        where: { user: userId }
+    })
 }
 
 /**
@@ -44,7 +51,7 @@ const updateUserLocation = async (userId, locationData) => {
 
     } else {
         // Creating a new location if it doesn't exist
-        return Location.createNewLocationForUser(userId, locationData)
+        return createNewLocationForUser(userId, locationData)
     }
 }
 

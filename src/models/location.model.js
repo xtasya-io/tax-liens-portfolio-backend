@@ -27,10 +27,14 @@ Location.init(
         zipCode: {
             type: DataTypes.INTEGER(5),
         },
+        // user: {
+        //     type: DataTypes.INTEGER
+        // },
+        // taxlien: {
+        //     type: DataTypes.INTEGER
+        // }
     },
     { sequelize }
 );
-
-Location.belongsTo(User);
 
 module.exports = Location;
