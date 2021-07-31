@@ -25,7 +25,7 @@ Location.init(
             type: DataTypes.STRING(64),
         },
         zipCode: {
-            type: DataTypes.NUMBER(5),
+            type: DataTypes.INTEGER(5),
         },
     },
     { sequelize }

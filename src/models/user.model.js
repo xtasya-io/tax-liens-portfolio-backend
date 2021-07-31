@@ -62,6 +62,9 @@ User.init(
         phone: {
             type: DataTypes.STRING(32)
         },
+        location: {
+            type: DataTypes.INTEGER
+        },
         isBanned: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
