@@ -17,4 +17,9 @@ const banUser = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send(user)
 })
 
-module.exports = { getAllUsers, updateUser, banUser }
+const unbanUser = catchAsync(async (req, res) => {
+    let user = await usersService.unbanUser(req.params.id)
+    res.status(httpStatus.OK).send(user)
+})
+
+module.exports = { getAllUsers, updateUser, banUser, unbanUser }

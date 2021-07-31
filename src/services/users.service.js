@@ -73,4 +73,28 @@ const createUser = async (userData) => {
     })
 }
 
-module.exports = { getUsers, updateUser, getUserByEmail, createUser }
+/**
+ * ban a user
+ * @param {Number} userId
+ * @returns {Promise<User>}
+ */
+const banUser = async (userId) => {
+    return User.update(
+        { isBanned: true },
+        { where: { id: userId } },
+    )
+}
+
+/**
+ * unban a user
+ * @param {Number} userId
+ * @returns {Promise<User>}
+ */
+const unbanUser = async (userId) => {
+    return User.update(
+        { isBanned: false },
+        { where: { id: userId } },
+    )
+}
+
+module.exports = { getUsers, updateUser, getUserByEmail, createUser, banUser, unbanUser }
