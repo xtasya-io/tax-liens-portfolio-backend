@@ -13,6 +13,15 @@ const getAdminByEmail = async (email) => {
 };
 
 /**
+ * Get admin by id
+ * @param {number} id
+ * @returns {Promise<Admin>}
+ */
+const getAdminById = async (id) => {
+    return Admin.findOne({ where: { id: id } }, { attributes: { exclude: ['password'] } });
+};
+
+/**
  * Create new Admin
  * @param {string} adminData
  * @returns {Promise<Admin>}
@@ -31,5 +40,6 @@ const createAdmin = async (adminData) => {
 
 module.exports = {
     getAdminByEmail,
-    createAdmin
+    createAdmin,
+    getAdminById
 }

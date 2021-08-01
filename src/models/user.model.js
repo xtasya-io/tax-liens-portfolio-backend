@@ -62,13 +62,28 @@ User.init(
         phone: {
             type: DataTypes.STRING(32)
         },
-        // location: {
-        //     type: DataTypes.INTEGER
-        // },
         isBanned: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
-        }
+        },
+        firstLineAddress: {
+            type: DataTypes.STRING(64),
+        },
+        secondLineAddress: {
+            type: DataTypes.STRING(64),
+        },
+        county: {
+            type: DataTypes.STRING(64),
+        },
+        state: {
+            type: DataTypes.STRING(64),
+        },
+        country: {
+            type: DataTypes.STRING(64),
+        },
+        zipCode: {
+            type: DataTypes.INTEGER(5),
+        },
     },
     // {
     //     freezeTableName: true
