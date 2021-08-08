@@ -15,7 +15,8 @@ function checkSchemaErrors(req, res, next) {
     // Check validation Schema Errors
     const schemaValidation = validationResult(req).formatWith(errorFormatter);
     if (!schemaValidation.isEmpty()) {
-        return res.status(422).json({ errors: schemaValidation.array() });
+        res.status(422).send({ errors: schemaValidation.array() });
+        return;
     }
     return next();
 }

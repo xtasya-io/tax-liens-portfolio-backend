@@ -2,6 +2,8 @@ require("dotenv").config()
 const { User } = require("../models");
 const repository = require("../repositories/base.repository");
 const bcrypt = require("bcryptjs");
+const ApiError = require("../utils/ApiError");
+const httpStatus = require("http-status");
 
 
 /**
@@ -43,8 +45,12 @@ const getUserByEmail = async (email) => {
  */
 const createUser = async (userData) => {
     let { firstName, lastName, email, password } = userData
-    // if (User.isEmailTaken(email)) throw Error("User already exists")
-    password = await bcrypt.hash(password, 10)
+    if (await User.findOne({ where: { email: email } })) throw new ApiError(httpStatus.CONFLICT, "User already exists")
+    try {
+        password = await bcrypt.hash(password, 10)
+    } catch (error) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "An error occured")
+    }
     return User.create({
         firstName,
         lastName,
