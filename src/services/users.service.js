@@ -23,10 +23,10 @@ const getUsers = async (filter = {}, attributes = ["id", "firstName", "lastName"
  * @returns {Promise<User>}
  */
 const updateUser = async (userId, userData) => {
-    return User.update({
+    return User.update(
         userData,
-        where: { id: userId }
-    })
+        { where: { id: userId } }
+    )
 }
 
 /**
