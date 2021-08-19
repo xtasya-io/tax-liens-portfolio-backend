@@ -66,9 +66,9 @@ User.init(
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
-        birthDate: {
-            type: DataTypes.DATE
-        },
+        // birthDate: {
+        //     type: DataTypes.DATE
+        // },
         firstLineAddress: {
             type: DataTypes.STRING(64),
         },
