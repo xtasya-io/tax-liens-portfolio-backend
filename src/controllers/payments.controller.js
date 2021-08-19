@@ -8,11 +8,16 @@ const getAllPayments = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send(payments)
 })
 
-const getPayment = catchAsync(async (req, res) => {
-    let payment = await paymentsService.getUserPayment(req.params.id)
-    if (payment) res.status(httpStatus.OK).send({ payment: payment })
-    if (!payment) res.status(httpStatus.NOT_FOUND).send("No payments for this user")
+const getUserActivePayment = catchAsync(async (req, res) => {
+    let payment = await paymentsService.getUserActivePayment(req.params.id)
+    if (!payment) throw new ApiError(httpStatus.NOT_FOUND, "No active payments for this user")
+    res.status(httpStatus.OK).send({ payment: payment })
 });
+
+const getUserPayments = catchAsync(async (req, res) => {
+    let payments = await paymentsService.getPaymentsByUser(req.params.id)
+    res.status(httpStatus.OK).send(payments)
+})
 
 const getPaymentStatus = catchAsync(async (req, res) => {
     let isPaid = await paymentsService.getUserPaymentStatus(req.params.id);
@@ -31,7 +36,8 @@ const createPayment = catchAsync(async (req, res) => {
 
 module.exports = {
     getAllPayments,
-    getPayment,
+    getUserPayments,
+    getUserActivePayment,
     getPaymentStatus,
     createPayment,
 }

@@ -3,13 +3,44 @@ const { Payment } = require("../models")
 const ApiError = require('../utils/ApiError')
 
 /**
- * Get Payment of User
+ * Get Active Payment of User
  * @param {String} userId
  * @returns {Promise<Payment>}
  */
-const getUserPayment = async (userId) => {
+const getUserActivePayment = async (userId) => {
     return Payment.findOne({
-        where: { user: userId }
+        where: { user: userId, isActive: true }
+    })
+}
+
+/**
+ * Get Current Payment of User
+ * @param {String} userId
+ * @returns {Promise<Payment>}
+ */
+const getUserCurrentPayment = async (userId) => {
+    return Payment.findAndCountAll({
+        where: { user: userId },
+        order: [
+            ['endDate', 'DESC'],
+            ['startDate', 'DESC']
+        ],
+        limit: 1
+    })
+}
+
+/**
+ * Get Payments of User
+ * @param {String} userId
+ * @returns {Promise<Payment>}
+ */
+const getPaymentsByUser = async (userId) => {
+    return Payment.findAll({
+        where: { user: userId },
+        order: [
+            ['endDate', 'DESC'],
+            ['startDate', 'DESC']
+        ]
     })
 }
 
@@ -19,9 +50,7 @@ const getUserPayment = async (userId) => {
  * @returns {Boolean}
  */
 const getUserPaymentStatus = async (userId) => {
-    let payment = await Payment.findOne({
-        where: { user: userId }
-    })
+    let payment = (await getUserCurrentPayment(userId)).rows[0]
     if (!payment) {
         return false
     }
@@ -30,7 +59,7 @@ const getUserPaymentStatus = async (userId) => {
 }
 
 /**
- * Get Payment Status of User
+ * Create a new payment
  * @param {String} userId
  * @returns {Boolean}
  */
@@ -76,7 +105,8 @@ const getAllPayments = async () => {
 }
 
 module.exports = {
-    getUserPayment,
+    getUserActivePayment,
+    getPaymentsByUser,
     getUserPaymentStatus,
     createPayment,
     getAllPayments

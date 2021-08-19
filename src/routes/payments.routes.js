@@ -5,7 +5,8 @@ const { authenticateToken } = require('../middlewares')
 
 router.get('/', authenticateToken, paymentsController.getAllPayments)
 router.post('/', authenticateToken, paymentsController.createPayment)
-router.get('/details/users/:id', authenticateToken, paymentsController.getPayment)
+router.get('/users/:id', authenticateToken, paymentsController.getUserPayments)
+router.get('/details/users/:id', authenticateToken, paymentsController.getUserActivePayment)
 router.get('/status/users/:id', authenticateToken, paymentsController.getPaymentStatus)
 
 module.exports = router;
