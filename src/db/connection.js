@@ -18,6 +18,8 @@ const sequelize = new Sequelize(
     console.log("Connection has been established successfully.");
     // Synchronizing Tables
     await sequelize.sync({});
+    // Drop tables when needed
+    // await sequelize.sync({ force: true });
     console.log("Tables synchronized successfully.");
   } catch (error) {
     console.log(error);

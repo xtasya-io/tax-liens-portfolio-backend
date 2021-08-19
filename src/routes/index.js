@@ -6,6 +6,7 @@ const adminRoutes = require("./admin.routes");
 const categoriesRoutes = require("./categories.routes");
 const usersRoutes = require("./users.routes");
 const taxLiensRoutes = require("./taxLiens.routes");
+const PaymentsRoutes = require("./payments.routes");
 
 const defaultRoutes = [
   {
@@ -27,6 +28,10 @@ const defaultRoutes = [
   {
     path: "/tax-liens",
     route: taxLiensRoutes,
+  },
+  {
+    path: "/payments",
+    route: PaymentsRoutes,
   },
 ];
 

@@ -1,8 +1,8 @@
-const { User, TaxLien, Category } = require("../models");
+const { User, TaxLien, Category, Payment } = require("../models");
 
 module.exports = () => {
 
-    // User to Category
+    // TaxLien to Category
 
     Category.hasMany(TaxLien)
     TaxLien.belongsTo(Category, {
@@ -13,6 +13,13 @@ module.exports = () => {
 
     User.hasMany(TaxLien)
     TaxLien.belongsTo(User, {
+        foreignKey: 'user'
+    })
+
+    // User to Payment
+
+    User.hasOne(Payment)
+    Payment.belongsTo(User, {
         foreignKey: 'user'
     })
 
