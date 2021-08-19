@@ -25,7 +25,7 @@ const getUserPaymentStatus = async (userId) => {
         return false
     }
     let endDate = new Date(payment.endDate)
-    return Date.now() - endDate.getTime()
+    return endDate.getTime() - Date.now() > 0
 }
 
 /**
@@ -34,6 +34,11 @@ const getUserPaymentStatus = async (userId) => {
  * @returns {Boolean}
  */
 const createPayment = async ({ userId, type }) => {
+
+    let existingPayment = await Payment.findOne({ where: { user: userId, isActive: true } })
+    if (existingPayment) {
+        throw new Error("User has an active payment already")
+    }
 
     let startDate = new Date();
     let endDate;
@@ -46,20 +51,32 @@ const createPayment = async ({ userId, type }) => {
             endDate = startDate.setFullYear(startDate.getFullYear() + 1)
             break;
         default:
-            throw new Error(httpStatus.UNPROCESSABLE_ENTITY, "Invalid subscription type")
+            throw new Error("Invalid subscription type")
     }
 
     return Payment.create({
-        userId,
+        user: userId,
         startDate,
         endDate,
-        type
+        type,
+        isActive: true
     })
+
+}
+
+/**
+ * Get Payment Status of User
+ * @returns {Promise<User[]>}
+ */
+const getAllPayments = async () => {
+
+    return Payment.findAll()
 
 }
 
 module.exports = {
     getUserPayment,
     getUserPaymentStatus,
-    createPayment
+    createPayment,
+    getAllPayments
 }

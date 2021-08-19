@@ -6,8 +6,7 @@ const catchAsync = (fn) => (req, res, next) => {
         const message = err.message || httpStatus[statusCode];
         const response = {
             code: statusCode,
-            message,
-            ...({ stack: err.stack }),
+            message
         };
         res.status(statusCode).send(response)
     });

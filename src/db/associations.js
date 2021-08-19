@@ -18,7 +18,6 @@ module.exports = () => {
 
     // User to Payment
 
-    User.hasOne(Payment)
     Payment.belongsTo(User, {
         foreignKey: 'user'
     })

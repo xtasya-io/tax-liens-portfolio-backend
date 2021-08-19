@@ -19,6 +19,11 @@ Payment.init(
             allowNull: false
         },
 
+        isActive: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+
         type: {
             type: DataTypes.ENUM(['month', 'year']),
             allowNull: false
