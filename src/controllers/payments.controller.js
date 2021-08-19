@@ -1,4 +1,4 @@
-const { paymentsService } = require('../services')
+const { paymentsService, usersService } = require('../services')
 const catchAsync = require('../utils/catchAsync')
 const httpStatus = require("http-status")
 
@@ -13,7 +13,19 @@ const getPaymentStatus = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send({ paymentStatus: isPaid })
 });
 
+const createPayment = catchAsync(async (req, res) => {
+    let user = await usersService.getUserById(req.body.userId)
+    if (!user) res.status(httpStatus.NOT_FOUND).send("Could not find user")
+
+    let payment = await paymentsService.createPayment(req.body)
+    if (!payment) res.status(httpStatus.INTERNAL_SERVER_ERROR).send("An error occured")
+
+    res.status(httpStatus.CREATED).send()
+})
+
 module.exports = {
+    getAllPayments,
     getPayment,
-    getPaymentStatus
+    getPaymentStatus,
+    createPayment,
 }

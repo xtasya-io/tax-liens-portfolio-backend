@@ -1,30 +1,65 @@
+const httpStatus = require("http-status")
 const { Payment } = require("../models")
 
-module.exports = {
-    /**
-     * Get Payment of User
-     * @param {String} userId
-     * @returns {Promise<Payment>}
-     */
-    getUserPayment: async (userId) => {
-        return Payment.findOne({
-            where: { user: userId }
-        })
-    },
+/**
+ * Get Payment of User
+ * @param {String} userId
+ * @returns {Promise<Payment>}
+ */
+const getUserPayment = async (userId) => {
+    return Payment.findOne({
+        where: { user: userId }
+    })
+}
 
-    /**
-     * Get Payment Status of User
-     * @param {String} userId
-     * @returns {Boolean}
-     */
-    getUserPaymentStatus: async (userId) => {
-        let payment = await Payment.findOne({
-            where: { user: userId }
-        })
-        if (!payment) {
-            return false
-        }
-        let endDate = new Date(payment.endDate)
-        return Date.now() - endDate.getTime()
+/**
+ * Get Payment Status of User
+ * @param {String} userId
+ * @returns {Boolean}
+ */
+const getUserPaymentStatus = async (userId) => {
+    let payment = await Payment.findOne({
+        where: { user: userId }
+    })
+    if (!payment) {
+        return false
     }
+    let endDate = new Date(payment.endDate)
+    return Date.now() - endDate.getTime()
+}
+
+/**
+ * Get Payment Status of User
+ * @param {String} userId
+ * @returns {Boolean}
+ */
+const createPayment = async ({ userId, type }) => {
+
+    let startDate = new Date();
+    let endDate;
+
+    switch (type) {
+        case 'month':
+            endDate = startDate.setMonth(startDate.getMonth() + 1)
+            break;
+        case 'year':
+            endDate = startDate.setFullYear(startDate.getFullYear() + 1)
+            break;
+        default:
+            throw new Error(httpStatus.UNPROCESSABLE_ENTITY, "Invalid subscription type")
+    }
+
+    return Payment.create({
+        userId,
+        startDate,
+        endDate,
+        type
+    })
+
+}
+
+module.exports = {
+    getUserPayment,
+    getUserPaymentStatus,
+    createPayment
 }

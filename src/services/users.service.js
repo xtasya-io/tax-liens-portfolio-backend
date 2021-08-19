@@ -17,6 +17,15 @@ const getUsers = async (filter = {}, attributes = ["id", "firstName", "lastName"
 }
 
 /**
+ * Get one user by id
+ * @param {Number} userId
+ * @returns {Promise<User>}
+ */
+const getUserById = async (userId, attributes = ["id", "firstName", "lastName", "email", "phone"]) => {
+    return User.findByPk(userId, { attributes: attributes })
+}
+
+/**
  * Update User By id
  * @param {Number} userId
  * @param {Object} data
@@ -83,4 +92,4 @@ const unbanUser = async (userId) => {
     )
 }
 
-module.exports = { getUsers, updateUser, getUserByEmail, createUser, banUser, unbanUser }
+module.exports = { getUsers, getUserById, updateUser, getUserByEmail, createUser, banUser, unbanUser }
