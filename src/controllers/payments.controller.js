@@ -1,6 +1,7 @@
 const { paymentsService, usersService } = require('../services')
 const catchAsync = require('../utils/catchAsync')
 const httpStatus = require("http-status")
+const ApiError = require('../utils/ApiError')
 
 const getAllPayments = catchAsync(async (req, res) => {
     let payments = await paymentsService.getAllPayments()
@@ -21,7 +22,7 @@ const getPaymentStatus = catchAsync(async (req, res) => {
 const createPayment = catchAsync(async (req, res) => {
     let user = await usersService.getUserById(req.body.userId)
     if (!user) {
-        res.status(httpStatus.NOT_FOUND).send("Could not find user")
+        throw new ApiError(httpStatus.NOT_FOUND, "Could not find user")
     } else {
         let payment = await paymentsService.createPayment(req.body)
         if (payment) res.status(httpStatus.CREATED).send()

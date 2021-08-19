@@ -1,5 +1,6 @@
 const httpStatus = require("http-status")
 const { Payment } = require("../models")
+const ApiError = require('../utils/ApiError')
 
 /**
  * Get Payment of User
@@ -37,7 +38,7 @@ const createPayment = async ({ userId, type }) => {
 
     let existingPayment = await Payment.findOne({ where: { user: userId, isActive: true } })
     if (existingPayment) {
-        throw new Error("User has an active payment already")
+        throw new ApiError(httpStatus.CONFLICT, "User has an active payment already")
     }
 
     let startDate = new Date();
@@ -51,7 +52,7 @@ const createPayment = async ({ userId, type }) => {
             endDate = startDate.setFullYear(startDate.getFullYear() + 1)
             break;
         default:
-            throw new Error("Invalid subscription type")
+            throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, "Invalid subscription type")
     }
 
     return Payment.create({
