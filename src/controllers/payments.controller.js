@@ -19,7 +19,7 @@ const getUserPayments = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send(payments)
 })
 
-const getPaymentStatus = catchAsync(async (req, res) => {
+const getUserPaymentStatus = catchAsync(async (req, res) => {
     let isPaid = await paymentsService.getUserPaymentStatus(req.params.id);
     res.status(httpStatus.OK).send({ paymentStatus: isPaid })
 });
@@ -34,10 +34,16 @@ const createPayment = catchAsync(async (req, res) => {
     }
 })
 
+const getUserLatestPayment = catchAsync(async (req, res) => {
+    let payment = await paymentsService.getUserLatestPayment(req.params.id)
+    res.status(httpStatus.OK).send(payment)
+})
+
 module.exports = {
     getAllPayments,
     getUserPayments,
+    getUserLatestPayment,
     getUserActivePayment,
-    getPaymentStatus,
+    getUserPaymentStatus,
     createPayment,
 }

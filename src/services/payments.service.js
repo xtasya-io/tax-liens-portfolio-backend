@@ -14,12 +14,12 @@ const getUserActivePayment = async (userId) => {
 }
 
 /**
- * Get Current Payment of User
+ * Get Latest Payment of User
  * @param {String} userId
  * @returns {Promise<Payment>}
  */
-const getUserCurrentPayment = async (userId) => {
-    return Payment.findAndCountAll({
+const getUserLatestPayment = async (userId) => {
+    let payments = await Payment.findAndCountAll({
         where: { user: userId },
         order: [
             ['endDate', 'DESC'],
@@ -27,6 +27,7 @@ const getUserCurrentPayment = async (userId) => {
         ],
         limit: 1
     })
+    return payments.rows[0]
 }
 
 /**
@@ -50,7 +51,7 @@ const getPaymentsByUser = async (userId) => {
  * @returns {Boolean}
  */
 const getUserPaymentStatus = async (userId) => {
-    let payment = (await getUserCurrentPayment(userId)).rows[0]
+    let payment = (await getUserLatestPayment(userId)).rows[0]
     if (!payment) {
         return false
     }
@@ -66,19 +67,30 @@ const getUserPaymentStatus = async (userId) => {
 const createPayment = async ({ userId, type }) => {
 
     let existingPayment = await Payment.findOne({ where: { user: userId, isActive: true } })
+    // if (existingPayment) {
+    //     throw new ApiError(httpStatus.CONFLICT, "User has an active payment already")
+    // }
+
+    let startDate;
+
+    if (!existingPayment) startDate = new Date();
+
     if (existingPayment) {
-        throw new ApiError(httpStatus.CONFLICT, "User has an active payment already")
+        startDate = new Date(
+            existingPayment.endDate.setDate(
+                existingPayment.endDate.getDate() + 1
+            ));
+
     }
 
-    let startDate = new Date();
-    let endDate;
+    let endDate = new Date(startDate)
 
     switch (type) {
         case 'month':
-            endDate = startDate.setMonth(startDate.getMonth() + 1)
+            endDate = endDate.setMonth(endDate.getMonth() + 1)
             break;
         case 'year':
-            endDate = startDate.setFullYear(startDate.getFullYear() + 1)
+            endDate = endDate.setFullYear(endDate.getFullYear() + 1)
             break;
         default:
             throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, "Invalid subscription type")
@@ -105,6 +117,7 @@ const getAllPayments = async () => {
 }
 
 module.exports = {
+    getUserLatestPayment,
     getUserActivePayment,
     getPaymentsByUser,
     getUserPaymentStatus,
