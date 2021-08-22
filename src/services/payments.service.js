@@ -1,5 +1,5 @@
 const httpStatus = require("http-status")
-const { Payment } = require("../models")
+const { Payment, User } = require("../models")
 const ApiError = require('../utils/ApiError')
 
 /**
@@ -107,7 +107,7 @@ const createPayment = async ({ userId, type }) => {
 }
 
 /**
- * Get Payment Status of User
+ * Get all the payments
  * @returns {Promise<User[]>}
  */
 const getAllPayments = async () => {
@@ -115,7 +115,8 @@ const getAllPayments = async () => {
     return Payment.findAll({
         order: [
             ['startDate', 'DESC']
-        ]
+        ],
+        include: [{ model: User }]
     })
 
 }
