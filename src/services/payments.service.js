@@ -112,7 +112,11 @@ const createPayment = async ({ userId, type }) => {
  */
 const getAllPayments = async () => {
 
-    return Payment.findAll()
+    return Payment.findAll({
+        order: [
+            ['startDate', 'DESC']
+        ]
+    })
 
 }
 
