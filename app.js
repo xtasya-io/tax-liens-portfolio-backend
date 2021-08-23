@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const morgan = require('morgan');
 
+const crons = require('./crons')
 const db = require('./src/db');
 
 // Using middlewares to all the requests
@@ -43,6 +44,12 @@ app.use('/', express.static(path.resolve(__dirname, `${_clientDir}/`)));
 app.get('/  ', (req, res) => {
   res.sendFile(path.join(__dirname, `${_clientDir}/index.html`));
 });
+
+/**
+ * Starting the crons
+ */
+
+crons.start();
 
 
 

@@ -108,7 +108,7 @@ const createPayment = async ({ userId, type }) => {
 
 /**
  * Get all the payments
- * @returns {Promise<User[]>}
+ * @returns {Promise<Payment[]>}
  */
 const getAllPayments = async () => {
 
@@ -121,11 +121,36 @@ const getAllPayments = async () => {
 
 }
 
+/**
+ * Get all the payments
+ * @returns {Promise<User[]>}
+ */
+const markPaymentAsOverdue = async () => {
+
+    let payments = await Payment.findAll({
+        where: { isActive: true },
+        order: [
+            ['startDate', 'DESC']
+        ]
+    })
+
+    Promise.all(payments.map(async (payment) => {
+        if (new Date(payment.endDate) < new Date()) {
+            // if (new Date(payment.endDate) < new Date('2021-11-17T03:24:00')) {
+            payment.setDataValue("isActive", false)
+            console.log('updating payment #', payment.id)
+            await payment.save()
+        }
+    }))
+
+}
+
 module.exports = {
     getUserLatestPayment,
     getUserActivePayment,
     getPaymentsByUser,
     getUserPaymentStatus,
+    markPaymentAsOverdue,
     createPayment,
     getAllPayments
 }

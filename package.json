@@ -39,6 +39,7 @@
     "http-status": "^1.5.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "node-cron": "^3.0.0",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
     "yup": "^0.32.9"
