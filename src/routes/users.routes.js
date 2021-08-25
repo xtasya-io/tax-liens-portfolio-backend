@@ -14,6 +14,6 @@ router.put("/unban/:id", usersContoller.unbanUser);
 router.get('/:id/payments', authenticateToken, paymentsController.getUserPayments)
 router.get('/:id/payments/active-payment', authenticateToken, paymentsController.getUserActivePayment)
 router.get('/:id/payments/status', authenticateToken, paymentsController.getUserPaymentStatus)
-router.get('/:id/payments/latest', authenticateToken, paymentsController.getUserLatestPayment)
+router.get('/:id/payments/latest-payment', authenticateToken, paymentsController.getUserLatestPayment)
 
 module.exports = router;

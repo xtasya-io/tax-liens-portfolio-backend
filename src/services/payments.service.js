@@ -27,6 +27,7 @@ const getUserLatestPayment = async (userId) => {
         ],
         limit: 1
     })
+    if (payments.rows.length == 0) throw new ApiError(404, "No payments for the current user")
     return payments.rows[0]
 }
 
@@ -51,7 +52,7 @@ const getPaymentsByUser = async (userId) => {
  * @returns {Boolean}
  */
 const getUserPaymentStatus = async (userId) => {
-    let payment = (await getUserLatestPayment(userId)).rows[0]
+    let payment = await (getUserLatestPayment(userId))[0]
     if (!payment) {
         return false
     }

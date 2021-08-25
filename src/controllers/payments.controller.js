@@ -36,7 +36,7 @@ const createPayment = catchAsync(async (req, res) => {
 
 const getUserLatestPayment = catchAsync(async (req, res) => {
     let payment = await paymentsService.getUserLatestPayment(req.params.id)
-    res.status(httpStatus.OK).send(payment)
+    res.status(httpStatus.OK).json({ "payment": payment })
 })
 
 module.exports = {
