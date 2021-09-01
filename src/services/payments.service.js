@@ -52,12 +52,12 @@ const getPaymentsByUser = async (userId) => {
  * @returns {Boolean}
  */
 const getUserPaymentStatus = async (userId) => {
-    let payment = await (getUserLatestPayment(userId))[0]
+    let payment = await (getUserLatestPayment(userId))
     if (!payment) {
         return false
     }
     let endDate = new Date(payment.endDate)
-    return endDate.getTime() - Date.now() > 0
+    return endDate.getTime() > Date.now()
 }
 
 /**
