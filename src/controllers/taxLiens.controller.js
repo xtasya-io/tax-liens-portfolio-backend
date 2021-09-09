@@ -48,6 +48,11 @@ const markTaxlienAsOverdue = catchAsync(async (req, res) => {
   res.status(httpStatus.ACCEPTED).end()
 })
 
+const getTaxLiensCharts = catchAsync(async (req, res) => {
+  let result = taxLiensService.getTaxLiensCharts(req.params.id)
+  res.status(httpStatus.OK).json(result)
+})
+
 module.exports = {
   getTaxLiens,
   getTaxLienById,
@@ -56,5 +61,6 @@ module.exports = {
   deleteTaxLien,
   getTaxLiensByUser,
   markTaxlienAsActive,
-  markTaxlienAsOverdue
+  markTaxlienAsOverdue,
+  getTaxLiensCharts
 }

@@ -5,6 +5,7 @@ const taxLiensController = require("../controllers/taxLiens.controller");
 router.get("/", taxLiensController.getTaxLiens);
 router.get("/:id", taxLiensController.getTaxLienById);
 router.get("/users/:id", taxLiensController.getTaxLiensByUser);
+router.get('/users/:id/charts', taxLiensController.getTaxLiensCharts)
 
 router.post("/", taxLiensController.createTaxLien);
 router.put("/:id", taxLiensController.updateTaxLien);

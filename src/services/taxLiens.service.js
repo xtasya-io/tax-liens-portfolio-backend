@@ -80,5 +80,34 @@ module.exports = {
    */
   markTaxlienAsOverdue: async (taxLienId) => {
     return TaxLien.update({ status: "overdue" }, { where: { id: taxLienId } })
+  },
+
+  /**
+   * Get taxliens charts
+   * @param {string} userId
+   * @returns {Promise<TaxLien>}
+   */
+  getTaxLiensCharts: async (userId) => {
+
+    let response = {}
+    response.total = await TaxLien.count({ where: { user: userId } })
+
+    const today = new Date()
+    const thisYear = today.getFullYear()
+    const thisMonth = today.getMonth()
+
+
+    let startDate = new Date(`${thisMonth}-1-${thisYear}`)
+    let endDate = today;
+    response.taxLiens = await TaxLien.findAll({
+      where: {
+        purchaseDate: {
+          between: [startDate, endDate]
+        }
+      }
+    })
+
+    return response
   }
+
 };
