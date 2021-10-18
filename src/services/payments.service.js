@@ -79,11 +79,13 @@ const createPayment = async ({ userId, priceId }) => {
                 quantity: 1
             }
         ],
-        success_url: '',
-        cancel_url: ''
+        success_url: 'https://www.google.com/search?q=success&oq=success&aqs=chrome..69i57j69i59j69i60l6.1250j0j4&sourceid=chrome&ie=UTF-8',
+        cancel_url: 'https://www.google.com/search?q=cancel&oq=cancel&aqs=chrome..69i57j0i271l3j69i61l3.2085j0j9&sourceid=chrome&ie=UTF-8'
     })
 
-    response.redirect(303, session.url)
+    console.log(session)
+
+    return (session.url)
 
     // TODO: move this to webhook
 

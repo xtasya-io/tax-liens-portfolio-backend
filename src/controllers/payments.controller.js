@@ -29,8 +29,10 @@ const createPayment = catchAsync(async (req, res) => {
     if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, "Could not find user")
     } else {
-        let payment = await paymentsService.createPayment(req.body)
-        if (payment) res.status(httpStatus.CREATED).send()
+        // let payment = await paymentsService.createPayment(req.body)
+        // if (payment) res.status(httpStatus.CREATED).send()
+        let paymentUrl = paymentsService.createPayment(req.body)
+        if (paymentUrl) res.redirect(303, paymentUrl)
     }
 })
 
