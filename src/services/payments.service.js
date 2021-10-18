@@ -1,6 +1,9 @@
-const httpStatus = require("http-status")
-const { Payment, User } = require("../models")
-const ApiError = require('../utils/ApiError')
+require("dotenv").config();
+const { response } = require("express");
+const httpStatus = require("http-status");
+const { Payment, User } = require("../models");
+const ApiError = require('../utils/ApiError');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 /**
  * Get Active Payment of User
@@ -65,7 +68,24 @@ const getUserPaymentStatus = async (userId) => {
  * @param {String} userId
  * @returns {Boolean}
  */
-const createPayment = async ({ userId, type }) => {
+const createPayment = async ({ userId, priceId }) => {
+
+    const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        payment_method_types: ['card'], // TODO: enable paypal
+        line_items: [
+            {
+                price: priceId,
+                quantity: 1
+            }
+        ],
+        success_url: '',
+        cancel_url: ''
+    })
+
+    response.redirect(303, session.url)
+
+    // TODO: move this to webhook
 
     let existingPayment = await Payment.findOne({ where: { user: userId, isActive: true } })
     // if (existingPayment) {
