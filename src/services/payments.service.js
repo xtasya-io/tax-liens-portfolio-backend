@@ -83,7 +83,7 @@ const createPayment = async ({ userId, priceId }) => {
         cancel_url: 'https://www.google.com/search?q=cancel&oq=cancel&aqs=chrome..69i57j0i271l3j69i61l3.2085j0j9&sourceid=chrome&ie=UTF-8'
     })
 
-    console.log(session)
+    console.log(session.url)
 
     return (session.url)
 

@@ -31,7 +31,7 @@ const createPayment = catchAsync(async (req, res) => {
     } else {
         // let payment = await paymentsService.createPayment(req.body)
         // if (payment) res.status(httpStatus.CREATED).send()
-        let paymentUrl = paymentsService.createPayment(req.body)
+        let paymentUrl = await paymentsService.createPayment(req.body)
         if (paymentUrl) res.redirect(303, paymentUrl)
     }
 })
