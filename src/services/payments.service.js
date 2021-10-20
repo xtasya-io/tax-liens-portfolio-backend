@@ -70,60 +70,63 @@ const getUserPaymentStatus = async (userId) => {
  */
 const createPayment = async ({ userId, priceId }) => {
 
-    const session = await stripe.checkout.sessions.create({
-        mode: 'subscription',
-        payment_method_types: ['card'], // TODO: enable paypal
-        line_items: [
-            {
-                price: priceId,
-                quantity: 1
-            }
-        ],
-        success_url: 'https://www.google.com/search?q=success&oq=success&aqs=chrome..69i57j69i59j69i60l6.1250j0j4&sourceid=chrome&ie=UTF-8',
-        cancel_url: 'https://www.google.com/search?q=cancel&oq=cancel&aqs=chrome..69i57j0i271l3j69i61l3.2085j0j9&sourceid=chrome&ie=UTF-8'
-    })
-
-    return (session)
+    try {
+        const session = await stripe.checkout.sessions.create({
+            mode: 'subscription',
+            payment_method_types: ['card'], // TODO: enable paypal
+            line_items: [
+                {
+                    price: priceId,
+                    quantity: 1
+                }
+            ],
+            success_url: process.env.APP_URL + '/#/payment-success',
+            cancel_url: process.env.APP_URL + '/#/payment-fail'
+        })
+        return (session)
+    } catch (error) {
+        console.log(error)
+    }
 
     // TODO: move this to webhook
 
-    let existingPayment = await Payment.findOne({ where: { user: userId, isActive: true } })
+    // let existingPayment = await Payment.findOne({ where: { user: userId, isActive: true } })
+    // // if (existingPayment) {
+    // //     throw new ApiError(httpStatus.CONFLICT, "User has an active payment already")
+    // // }
+
+    // let startDate;
+
+    // if (!existingPayment) startDate = new Date();
+
     // if (existingPayment) {
-    //     throw new ApiError(httpStatus.CONFLICT, "User has an active payment already")
+    //     startDate = new Date(
+    //         existingPayment.endDate.setDate(
+    //             existingPayment.endDate.getDate() + 1
+    //         ));
+
     // }
 
-    let startDate;
+    // let endDate = new Date(startDate)
 
-    if (!existingPayment) startDate = new Date();
+    // switch (type) {
+    //     case 'month':
+    //         endDate = endDate.setMonth(endDate.getMonth() + 1)
+    //         break;
+    //     case 'year':
+    //         endDate = endDate.setFullYear(endDate.getFullYear() + 1)
+    //         break;
+    //     default:
+    //         throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, "Invalid subscription type")
+    // }
 
-    if (existingPayment) {
-        startDate = new Date(
-            existingPayment.endDate.setDate(
-                existingPayment.endDate.getDate() + 1
-            ));
-
-    }
-
-    let endDate = new Date(startDate)
-
-    switch (type) {
-        case 'month':
-            endDate = endDate.setMonth(endDate.getMonth() + 1)
-            break;
-        case 'year':
-            endDate = endDate.setFullYear(endDate.getFullYear() + 1)
-            break;
-        default:
-            throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, "Invalid subscription type")
-    }
-
-    return Payment.create({
-        user: userId,
-        startDate,
-        endDate,
-        type,
-        isActive: true
-    })
+    // return Payment.create({
+    //     user: userId,
+    //     startDate,
+    //     endDate,
+    //     type,
+    //     isActive: true
+    // })
 
 }
 
