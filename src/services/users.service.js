@@ -92,4 +92,13 @@ const unbanUser = async (userId) => {
     )
 }
 
+/**
+ * Get user session id
+ * @param {Number} userId
+ * @returns {String}
+ */
+const getStripeSession = async (userId) => {
+
+}
+
 module.exports = { getUsers, getUserById, updateUser, getUserByEmail, createUser, banUser, unbanUser }

@@ -1,7 +1,10 @@
+require("dotenv").config();
 const { paymentsService, usersService } = require('../services')
 const catchAsync = require('../utils/catchAsync')
 const httpStatus = require("http-status")
 const ApiError = require('../utils/ApiError')
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const getAllPayments = catchAsync(async (req, res) => {
     let payments = await paymentsService.getAllPayments()
@@ -36,6 +39,16 @@ const createPayment = catchAsync(async (req, res) => {
     }
 })
 
+const createPortalSession = catchAsync(async (req, res) => {
+    const checkoutSession = await stripe.checkout.sessions.retrieve(req.user.stripeSessionId);
+    const returnUrl = process.env.APP_URL;
+    const portalSession = await stripe.billingPortal.sessions.create({
+        customer: checkoutSession.customer,
+        return_url: returnUrl,
+    });
+    res.redirect(303, portalSession.url);
+})
+
 const getUserLatestPayment = catchAsync(async (req, res) => {
     let payment = await paymentsService.getUserLatestPayment(req.params.id)
     res.status(httpStatus.OK).json({ "payment": payment })
@@ -48,4 +61,5 @@ module.exports = {
     getUserActivePayment,
     getUserPaymentStatus,
     createPayment,
+    createPortalSession
 }
