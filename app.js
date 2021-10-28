@@ -22,55 +22,26 @@ const { cors } = require("./src/middlewares");
 
 app.use(cors);
 
-
-// var createToken = function () {
-
-//   var param = {};
-//   param.card ={
-//       number: '4242424242424242',
-//       exp_month: 2,
-//       exp_year:2024,
-//       cvc:'212'
-//   }
-
-//   stripe.tokens.create(param, function (err,token) {
-//       if(err)
-//       {
-//           console.log("err: "+err);
-//       }if(token)
-//       {
-//           console.log("success: "+JSON.stringify(token, null, 2));
-//       }else{
-//           console.log("Something wrong")
-//       }
-//   })
-// }
-
-
-
 app.post("/api/stripe", async (req, res) => {
   try {
     const param = {};
-    param.card ={
-        number: '4242424242424242',
-        exp_month: 2,
-        exp_year:2024,
-        cvc:'212'
-    }
-  
-    stripe.tokens.create(param, function (err,token) {
-      if(err)
-      {
-          console.log("err: "+err);
-      }if(token)
-      {
-          console.log("success: "+JSON.stringify(token, null, 2));
-      }else{
-          console.log("Something wrong")
+    param.card = {
+      number: "4242424242424242",
+      exp_month: 2,
+      exp_year: 2024,
+      cvc: "212",
+    };
+
+    stripe.tokens.create(param, function (err, token) {
+      if (err) {
+        console.log("err: " + err);
       }
-  })
-
-
+      if (token) {
+        console.log("success: " + JSON.stringify(token, null, 2));
+      } else {
+        console.log("Something wrong");
+      }
+    });
 
     // const payment = await stripe.paymentIntents.create({
     //   amount,
