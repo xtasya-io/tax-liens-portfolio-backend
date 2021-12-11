@@ -1,5 +1,4 @@
 require("dotenv").config();
-const { response } = require("express");
 const httpStatus = require("http-status");
 const { Payment, User } = require("../models");
 const ApiError = require('../utils/ApiError');
@@ -68,7 +67,7 @@ const getUserPaymentStatus = async (userId) => {
  * @param {String} userId
  * @returns {Boolean}
  */
-const createPayment = async ({ userId, priceId }) => {
+const createPayment = async (userId, priceId) => {
 
     try {
         const session = await stripe.checkout.sessions.create({
@@ -85,7 +84,7 @@ const createPayment = async ({ userId, priceId }) => {
         })
         return (session)
     } catch (error) {
-        console.log(error)
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error)
     }
 
     // TODO: move this to webhook

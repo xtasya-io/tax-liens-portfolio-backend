@@ -5,6 +5,7 @@ const ApiError = require('../utils/ApiError')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const webhookHandler = catchAsync(async (req, res) => {
+    console.log("HELELOOOOOOWS =============================\n", req)
     let data;
     let eventType;
     let event;

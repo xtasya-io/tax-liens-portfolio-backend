@@ -4,6 +4,7 @@ const repository = require("../repositories/base.repository");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
+const paymentsService = require("./payments.service");
 
 
 /**
@@ -106,12 +107,38 @@ const unbanUser = async (userId) => {
 }
 
 /**
- * Get user session id
+ * activate user account
  * @param {Number} userId
- * @returns {String}
+ * @returns {Promise<StripeSession>} 
  */
-const getStripeSession = async (userId) => {
+const activateAccount = async (userId, plan) => {
+
+        // Getting user by id
+        let user = User.findOne({ id: userId })
+
+        // Throwing error if user do not exist
+        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
+
+        // Throwing error if user account is premium
+        if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
+
+        // Get price id by plan type
+        let priceId = null;
+
+        switch (plan) {
+            case "month":
+                priceId = process.env.MONTH_PLAN_PRICE_ID
+                break;
+            case "year":
+                priceId = process.env.YEAR_PLAN_PRICE_ID
+                break;
+            default:
+                throw new ApiError(500, "Could not process selected plan")
+        }
+
+        // Creating stripe session
+        return paymentsService.createPayment(userId, priceId)
 
 }
 
-module.exports = { getUsers, getUserById, updateUser, getUserByEmail, createUser, banUser, unbanUser }
+module.exports = { getUsers, getUserById, updateUser, getUserByEmail, createUser, banUser, unbanUser, activateAccount }
