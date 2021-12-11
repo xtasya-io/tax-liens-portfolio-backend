@@ -10,17 +10,12 @@ const login = catchAsync(async (req, res) => {
     const { email, password, type } = req.body;
     const user = await authService.loginWithEmailAndPassword(email, password, type)
     const accessToken = tokenService.generateToken(email)
-    res.status(200).send({ user: user, accessToken })
+    res.status(200).send({ user, accessToken })
 })
 
 const registerUser = catchAsync(async (req, res) => {
-    try {
-        const user = await usersService.createUser(req.body)
-        res.status(httpStatus.CREATED).send(user)
-    }
-    catch (error) {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error)
-    }
+    const user = await usersService.createUser(req.body)
+    res.status(httpStatus.CREATED).send(user)
 })
 
 module.exports = { login, registerUser }
