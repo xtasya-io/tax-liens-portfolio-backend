@@ -2,7 +2,7 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(
-  "taxliens",
+  "lientrax",
   process.env.DB_USERNAME,
   process.env.DB_PASS,
   {
