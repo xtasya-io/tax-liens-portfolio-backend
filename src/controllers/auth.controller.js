@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const httpStatus = require('http-status');
 const { tokenService, authService, usersService, stripeService } = require("../services");
+const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 
 
@@ -15,8 +16,13 @@ const login = catchAsync(async (req, res) => {
 })
 
 const registerUser = catchAsync(async (req, res) => {
-    await usersService.createUser(req.body)
-    res.status(httpStatus.CREATED).end()
+    try {
+        const user = await usersService.createUser(req.body)
+        res.status(httpStatus.CREATED).send(user)
+    }
+    catch (error) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error)
+    }
 })
 
 module.exports = { login, registerUser }

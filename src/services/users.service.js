@@ -53,19 +53,32 @@ const getUserByEmail = async (email) => {
  * @returns {Promise<User>}
  */
 const createUser = async (userData) => {
+    
+    // Getting data from the request body
     let { firstName, lastName, email, password } = userData
+    
+    // Returning user exist in case email is used
     if (await User.findOne({ where: { email: email } })) throw new ApiError(httpStatus.CONFLICT, "User already exists")
+    
+    // Hashing the password
     try {
         password = await bcrypt.hash(password, 10)
     } catch (error) {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "An error occured")
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error)
     }
-    return User.create({
+
+    // Creating the new user object
+    let user = Object.assign({}, {
         firstName,
         lastName,
         email,
-        password
+        password,
+        status: "free",
+        subscriptionId: null
     })
+
+    // Save the new user in the database
+    return User.create(user)
 }
 
 /**
