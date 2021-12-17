@@ -24,8 +24,8 @@ const unbanUser = catchAsync(async (req, res) => {
 })
 
 const activateAccount = catchAsync(async (req, res) => {
-    let user = await usersService.activateAccount(req.params.id, req.body.plan)
-    res.status(httpStatus.OK).send(user)
+    let session = await usersService.activateAccount(req.params.id, req.body.plan)
+    res.status(httpStatus.OK).send(session)
 })
 
 module.exports = { getAllUsers, updateUser, banUser, unbanUser, activateAccount }

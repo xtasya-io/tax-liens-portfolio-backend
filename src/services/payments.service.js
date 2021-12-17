@@ -71,7 +71,7 @@ const createPayment = async (userId, priceId) => {
 
     try {
         const session = await stripe.checkout.sessions.create({
-            mode: 'subscription',
+            mode: 'payment',
             payment_method_types: ['card'], // TODO: enable paypal
             line_items: [
                 {
@@ -79,8 +79,8 @@ const createPayment = async (userId, priceId) => {
                     quantity: 1
                 }
             ],
-            success_url: process.env.APP_URL + '/#/payment-success',
-            cancel_url: process.env.APP_URL + '/#/payment-fail'
+            success_url: process.env.USER_DASHBOARD_URL + '/#/payment-success',
+            cancel_url: process.env.USER_DASHBOARD_URL + '/#/payment-fail'
         })
         return (session)
     } catch (error) {

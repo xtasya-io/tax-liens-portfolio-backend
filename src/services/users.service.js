@@ -137,7 +137,9 @@ const activateAccount = async (userId, plan) => {
         }
 
         // Creating stripe session
-        return paymentsService.createPayment(userId, priceId)
+        let payment = await paymentsService.createPayment(userId, priceId)
+
+        return payment.url
 
 }
 
