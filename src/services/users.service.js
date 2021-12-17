@@ -111,7 +111,7 @@ const unbanUser = async (userId) => {
  * @param {Number} userId
  * @returns {Promise<StripeSession>} 
  */
-const activateAccount = async (userId, plan) => {
+const activateAccount = async (userId) => {
 
         // Getting user by id
         let user = User.findOne({ id: userId })
@@ -122,24 +122,15 @@ const activateAccount = async (userId, plan) => {
         // Throwing error if user account is premium
         if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
 
-        // Get price id by plan type
-        let priceId = null;
+        // Updating the user status to premium
+        user = await User.update({ status: "premium" }, {
+            where: {
+                id: userId
+            }
+        });
 
-        switch (plan) {
-            case "month":
-                priceId = process.env.MONTH_PLAN_PRICE_ID
-                break;
-            case "year":
-                priceId = process.env.YEAR_PLAN_PRICE_ID
-                break;
-            default:
-                throw new ApiError(500, "Could not process selected plan")
-        }
-
-        // Creating stripe session
-        let payment = await paymentsService.createPayment(userId, priceId)
-
-        return payment.url
+        // Return the user data
+        return user
 
 }
 

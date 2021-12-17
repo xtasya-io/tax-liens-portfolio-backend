@@ -16,9 +16,11 @@ app.use(bodyParser.json());
 Using Cross Origin middelware
 **/
 
-const { cors } = require("./src/middlewares");
+const { corsMiddleware } = require("./src/middlewares");
+const cors = require("cors")
 
-app.use(cors);
+app.use(corsMiddleware);
+app.use(cors());
 
 /* 
   Importing Routes
