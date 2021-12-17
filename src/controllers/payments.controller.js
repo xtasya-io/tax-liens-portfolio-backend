@@ -39,6 +39,11 @@ const createPayment = catchAsync(async (req, res) => {
     }
 })
 
+const initPayment = catchAsync(async (req, res) => {
+    let session = await paymentsService.initPayment(req.params.id, req.body.plan)
+    res.status(httpStatus.OK).redirect(session)
+})
+
 const createPortalSession = catchAsync(async (req, res) => {
     const checkoutSession = await stripe.checkout.sessions.retrieve(req.user.stripeSessionId);
     const returnUrl = process.env.APP_URL;
@@ -61,5 +66,6 @@ module.exports = {
     getUserActivePayment,
     getUserPaymentStatus,
     createPayment,
-    createPortalSession
+    createPortalSession,
+    initPayment
 }

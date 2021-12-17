@@ -168,6 +168,44 @@ const markPaymentAsOverdue = async () => {
 
 }
 
+/**
+ * init payment
+ * @param {Number} userId
+ * @returns {Promise<StripeSession>} 
+ */
+ const initPayment = async (userId, plan) => {
+
+    // Getting user by id
+    let user = User.findOne({ id: userId })
+
+    // Throwing error if user do not exist
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
+
+    // Throwing error if user account is premium
+    if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
+
+    // Get price id by plan type
+    let priceId = null;
+
+    switch (plan) {
+        case "month":
+            priceId = process.env.MONTH_PLAN_PRICE_ID
+            break;
+        case "year":
+            priceId = process.env.YEAR_PLAN_PRICE_ID
+            break;
+        default:
+            throw new ApiError(500, "Could not process selected plan")
+    }
+
+    // Creating stripe session
+    let payment = await createPayment(userId, priceId)
+
+    return payment.url
+
+}
+
+
 module.exports = {
     getUserLatestPayment,
     getUserActivePayment,
@@ -175,5 +213,6 @@ module.exports = {
     getUserPaymentStatus,
     markPaymentAsOverdue,
     createPayment,
-    getAllPayments
+    getAllPayments,
+    initPayment
 }
