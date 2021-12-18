@@ -18,14 +18,17 @@ Subscription.isPaymentOverdue = function () {
 Subscription.init(
   {
     startDate: {
-      type: DataTypes.DATE(),
+      type: DataTypes.DATE()
       // defaultValue: new Date()
     },
-    endData: {
-      type: DataTypes.SMALLINT, // 60 * 60 * 24 * chosen duration
+    endDate: {
+      type: DataTypes.DATE()
+    },
+    duration: {
+      type: DataTypes.ENUM("month", "year")
     },
     type: {
-      type: DataTypes.ENUM("premium"),
+      type: DataTypes.ENUM("premium")
     },
   },
   { sequelize }
