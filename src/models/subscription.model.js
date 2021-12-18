@@ -21,7 +21,7 @@ Subscription.init(
       type: DataTypes.DATE(),
       // defaultValue: new Date()
     },
-    duration: {
+    endData: {
       type: DataTypes.SMALLINT, // 60 * 60 * 24 * chosen duration
     },
     type: {
