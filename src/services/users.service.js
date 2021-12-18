@@ -4,6 +4,7 @@ const repository = require("../repositories/base.repository");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
+const paymentsService = require("./payments.service");
 
 
 /**
@@ -53,19 +54,32 @@ const getUserByEmail = async (email) => {
  * @returns {Promise<User>}
  */
 const createUser = async (userData) => {
+    
+    // Getting data from the request body
     let { firstName, lastName, email, password } = userData
+    
+    // Returning user exist in case email is used
     if (await User.findOne({ where: { email: email } })) throw new ApiError(httpStatus.CONFLICT, "User already exists")
+    
+    // Hashing the password
     try {
         password = await bcrypt.hash(password, 10)
     } catch (error) {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "An error occured")
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error)
     }
-    return User.create({
+
+    // Creating the new user object
+    let user = Object.assign({}, {
         firstName,
         lastName,
         email,
-        password
+        password,
+        status: "free",
+        subscriptionId: null
     })
+
+    // Save the new user in the database
+    return User.create(user)
 }
 
 /**
@@ -92,4 +106,32 @@ const unbanUser = async (userId) => {
     )
 }
 
-module.exports = { getUsers, getUserById, updateUser, getUserByEmail, createUser, banUser, unbanUser }
+/**
+ * activate user account
+ * @param {Number} userId
+ * @returns {Promise<StripeSession>} 
+ */
+const activateAccount = async (userId) => {
+
+        // Getting user by id
+        let user = User.findOne({ id: userId })
+
+        // Throwing error if user do not exist
+        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
+
+        // Throwing error if user account is premium
+        if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
+
+        // Updating the user status to premium
+        user = await User.update({ status: "premium" }, {
+            where: {
+                id: userId
+            }
+        });
+
+        // Return the user data
+        return user
+
+}
+
+module.exports = { getUsers, getUserById, updateUser, getUserByEmail, createUser, banUser, unbanUser, activateAccount }

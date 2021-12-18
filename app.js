@@ -12,57 +12,16 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
-
 /*
 Using Cross Origin middelware
 **/
 
-const { cors } = require("./src/middlewares");
+const { corsMiddleware } = require("./src/middlewares");
+const cors = require("cors")
 
-app.use(cors);
+app.use(corsMiddleware);
+app.use(cors());
 
-app.post("/api/stripe", async (req, res) => {
-  try {
-    const param = {};
-    param.card = {
-      number: "4242424242424242",
-      exp_month: 2,
-      exp_year: 2024,
-      cvc: "212",
-    };
-
-    stripe.tokens.create(param, function (err, token) {
-      if (err) {
-        console.log("err: " + err);
-      }
-      if (token) {
-        console.log("success: " + JSON.stringify(token, null, 2));
-      } else {
-        console.log("Something wrong");
-      }
-    });
-
-    // const payment = await stripe.paymentIntents.create({
-    //   amount,
-    //   currency: "USD",
-    //   description: "LienTrax Company",
-    //   payment_method: id,
-    //   confirm: true,
-    // });
-    // console.log("payment", payment);
-    res.json({
-      message: "Payment successful",
-      success: true,
-    });
-  } catch (error) {
-    console.log(error);
-    res.json({
-      message: "Payment faild",
-      success: false,
-    });
-  }
-});
 /* 
   Importing Routes
 **/
@@ -74,6 +33,16 @@ const routes = require("./src/routes");
 **/
 
 app.use("/api", routes);
+
+
+
+/*
+  Stripe webhook
+**/
+
+const { webhookHandler } = require('./src/controllers/webhook.controller');
+
+app.post("/webhooks", webhookHandler);
 
 /**
  * Static

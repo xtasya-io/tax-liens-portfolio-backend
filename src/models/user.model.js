@@ -87,6 +87,20 @@ User.init(
         zipCode: {
             type: DataTypes.INTEGER(5),
         },
+
+        // Subscription
+        status: {
+            // ENUM: ['active', 'overdue']
+            type: DataTypes.STRING(16)
+        },
+        customerId: {
+            type: DataTypes.STRING(32),
+            field: "customer_id"
+        },
+        subscriptionId: {
+            type: DataTypes.STRING(32),
+            field: "subscription_id"
+        }
     },
     // {
     //     freezeTableName: true

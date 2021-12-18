@@ -1,7 +1,10 @@
+require("dotenv").config();
 const { paymentsService, usersService } = require('../services')
 const catchAsync = require('../utils/catchAsync')
 const httpStatus = require("http-status")
 const ApiError = require('../utils/ApiError')
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const getAllPayments = catchAsync(async (req, res) => {
     let payments = await paymentsService.getAllPayments()
@@ -29,9 +32,16 @@ const createPayment = catchAsync(async (req, res) => {
     if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, "Could not find user")
     } else {
+        // let payment = await paymentsService.createPayment(req.body)
+        // if (payment) res.status(httpStatus.CREATED).send()
         let payment = await paymentsService.createPayment(req.body)
-        if (payment) res.status(httpStatus.CREATED).send()
+        if (payment) res.status(200).send(payment)
     }
+})
+
+const initPayment = catchAsync(async (req, res) => {
+    let session = await paymentsService.initPayment(req.params.id, req.body.plan)
+    res.json({ "paymentUrl": session })
 })
 
 const getUserLatestPayment = catchAsync(async (req, res) => {
@@ -46,4 +56,5 @@ module.exports = {
     getUserActivePayment,
     getUserPaymentStatus,
     createPayment,
+    initPayment
 }

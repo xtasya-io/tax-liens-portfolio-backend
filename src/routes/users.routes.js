@@ -6,8 +6,12 @@ const paymentsController = require('../controllers/payments.controller');
 
 router.get("/", usersContoller.getAllUsers);
 router.put("/:id", usersContoller.updateUser);
-router.put("/ban/:id", usersContoller.banUser);
-router.put("/unban/:id", usersContoller.unbanUser);
+router.put("/ban/:id", authenticateToken, usersContoller.banUser);
+router.put("/unban/:id", authenticateToken, usersContoller.unbanUser);
+
+// Activation
+
+router.put("/:id/activate", authenticateToken, usersContoller.activateAccount)
 
 // Payments routes
 
