@@ -30,7 +30,6 @@ module.exports = {
     }),
 
     deleteCategories: catchAsync(async (req, res) => {
-        console.log(req.body.categoriesCodes)
         let deleted = await categoriesService.deleteCategories(req.body.categoriesCodes)
         if (deleted > 0) res.status(httpStatus.OK).json({ message: 'Deleted' })
     })

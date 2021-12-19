@@ -4,7 +4,7 @@ const repository = require("../repositories/base.repository");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-const paymentsService = require("./payments.service");
+const subscriptionsService = require("./subscriptions.service.js");
 
 
 /**
@@ -113,24 +113,29 @@ const unbanUser = async (userId) => {
  */
 const activateAccount = async (userId) => {
 
-        // Getting user by id
-        let user = User.findOne({ id: userId })
+    // Getting user by id
+    let user = await User.findByPk(userId)
 
-        // Throwing error if user do not exist
-        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
+    // Throwing error if user do not exist
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
 
-        // Throwing error if user account is premium
-        if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
+    // Throwing error if user account is premium
+    if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
 
-        // Updating the user status to premium
-        user = await User.update({ status: "premium" }, {
-            where: {
-                id: userId
-            }
-        });
+    // Getting user subscription if exists
+    if (user.subscriptionId) {
+        await subscriptionsService.ConfirmTemporarySubscription(user.subscriptionId)
+    }
 
-        // Return the user data
-        return user
+    // Updating the user status to premium
+    user = await User.update({ status: "premium" }, {
+        where: {
+            id: userId
+        }
+    });
+
+    // Return the user data
+    return user
 
 }
 

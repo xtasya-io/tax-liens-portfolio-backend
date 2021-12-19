@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../db/connection");
-const User = require("./");
+const User = require("./user.model");
 
 /**
  * @typedef Subscription
@@ -18,15 +18,25 @@ Subscription.isPaymentOverdue = function () {
 Subscription.init(
   {
     startDate: {
-      type: DataTypes.DATE(),
+      type: DataTypes.DATE()
       // defaultValue: new Date()
     },
+    endDate: {
+      type: DataTypes.DATE()
+    },
     duration: {
-      type: DataTypes.SMALLINT, // 60 * 60 * 24 * chosen duration
+      type: DataTypes.ENUM("month", "year")
     },
     type: {
-      type: DataTypes.ENUM("premium"),
+      type: DataTypes.ENUM("premium")
     },
+    status: {
+      type: DataTypes.ENUM("temporary", "confirmed")
+    },
+    // Stripe sessionId
+    sessionId: {
+      type: DataTypes.STRING
+    }
   },
   { sequelize }
 );

@@ -35,15 +35,6 @@ const routes = require("./src/routes");
 app.use("/api", routes);
 
 
-
-/*
-  Stripe webhook
-**/
-
-const { webhookHandler } = require('./src/controllers/webhook.controller');
-
-app.post("/webhooks", webhookHandler);
-
 /**
  * Static
  */
