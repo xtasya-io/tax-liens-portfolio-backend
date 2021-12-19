@@ -8,7 +8,6 @@ const getAllUsers = catchAsync(async (req, res) => {
 })
 
 const updateUser = catchAsync(async (req, res) => {
-    console.log(req.body)
     let user = await usersService.updateUser(req.params.id, req.body);
     res.status(httpStatus.OK).send(user)
 })
