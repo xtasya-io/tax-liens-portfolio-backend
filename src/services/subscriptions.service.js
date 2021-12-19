@@ -9,11 +9,11 @@ module.exports = {
   },
 
   /**
-   * Create a new subscription
+   * Confirm subscription
    * @returns {Promise<{Subscription>}
    */
-  CreateSubscription: async (duration) => {
-      
+  ConfirmSubscription: async (duration) => {
+
     // Setting dateFrom to today
     let dateFrom = new Date();
     
@@ -35,6 +35,27 @@ module.exports = {
         dateTo,
         duration,
         type: "premium"
+    })
+
+    // Saving the new subscription
+    return Subscription.create(subscription)
+
+  },
+
+  /**
+   * Create Temporary subscription
+   * @returns {Promise<{Subscription>}
+   */
+   CreateTemporarySubscription: async (sessionId) => {
+
+    // Setting dateFrom to today
+    let dateFrom = new Date();
+
+    // Creating the new subscription
+    let subscription = Object.assign({}, {
+        sessionId,
+        dateFrom,
+        type: "temporary",
     })
 
     // Saving the new subscription

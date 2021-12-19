@@ -4,7 +4,7 @@ const repository = require("../repositories/base.repository");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-const paymentsService = require("./payments.service");
+const subscriptionsService = require("./subscriptions.service.js");
 
 
 /**
@@ -121,6 +121,9 @@ const activateAccount = async (userId) => {
 
         // Throwing error if user account is premium
         if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
+
+        // Creating a new subscription
+        let subscription = await subscriptionsService.CreateSubscription()
 
         // Updating the user status to premium
         user = await User.update({ status: "premium" }, {

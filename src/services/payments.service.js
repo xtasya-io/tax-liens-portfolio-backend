@@ -70,6 +70,7 @@ const getUserPaymentStatus = async (userId) => {
 const createPayment = async (userId, priceId) => {
 
     try {
+        // Call to Stripe API to create payment session
         const session = await stripe.checkout.sessions.create({
             mode: 'payment',
             payment_method_types: ['card'], // TODO: enable paypal
@@ -82,50 +83,13 @@ const createPayment = async (userId, priceId) => {
             success_url: process.env.USER_DASHBOARD_URL + '/#/payment-success',
             cancel_url: process.env.USER_DASHBOARD_URL + '/#/payment-fail'
         })
+
+        // Return Stripe session
         return (session)
+    
     } catch (error) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error)
     }
-
-    // TODO: move this to webhook
-
-    // let existingPayment = await Payment.findOne({ where: { user: userId, isActive: true } })
-    // // if (existingPayment) {
-    // //     throw new ApiError(httpStatus.CONFLICT, "User has an active payment already")
-    // // }
-
-    // let startDate;
-
-    // if (!existingPayment) startDate = new Date();
-
-    // if (existingPayment) {
-    //     startDate = new Date(
-    //         existingPayment.endDate.setDate(
-    //             existingPayment.endDate.getDate() + 1
-    //         ));
-
-    // }
-
-    // let endDate = new Date(startDate)
-
-    // switch (type) {
-    //     case 'month':
-    //         endDate = endDate.setMonth(endDate.getMonth() + 1)
-    //         break;
-    //     case 'year':
-    //         endDate = endDate.setFullYear(endDate.getFullYear() + 1)
-    //         break;
-    //     default:
-    //         throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, "Invalid subscription type")
-    // }
-
-    // return Payment.create({
-    //     user: userId,
-    //     startDate,
-    //     endDate,
-    //     type,
-    //     isActive: true
-    // })
 
 }
 
@@ -201,7 +165,7 @@ const markPaymentAsOverdue = async () => {
     // Creating stripe session
     let payment = await createPayment(userId, priceId)
 
-    return payment.url
+    return payment
 
 }
 

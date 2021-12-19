@@ -6,3 +6,4 @@ module.exports.usersService = require("./users.service");
 module.exports.taxLiensService = require("./taxLiens.service");
 module.exports.paymentsService = require("./payments.service");
 module.exports.stripeService = require("./stripe.service");
+module.exports.subscriptionsService = require("./subscriptions.service");

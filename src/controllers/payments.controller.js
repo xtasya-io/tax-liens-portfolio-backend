@@ -1,10 +1,8 @@
 require("dotenv").config();
-const { paymentsService, usersService } = require('../services')
+const { paymentsService, usersService, subscriptionsService } = require('../services')
 const catchAsync = require('../utils/catchAsync')
 const httpStatus = require("http-status")
 const ApiError = require('../utils/ApiError')
-
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const getAllPayments = catchAsync(async (req, res) => {
     let payments = await paymentsService.getAllPayments()
@@ -27,26 +25,20 @@ const getUserPaymentStatus = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send({ paymentStatus: isPaid })
 });
 
-const createPayment = catchAsync(async (req, res) => {
-    let user = await usersService.getUserById(req.body.userId)
-    if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user")
-           
-    // Creating the payment session
-    let payment = await paymentsService.createPayment(req.body)
-
-    // Storing the session id in the user to use after payment
-    user = {
-        ...user,
-        sessionId: payment.id
-    }
-
-    user.save()
-        
-    res.status(200).send(payment)
-})
-
 const initPayment = catchAsync(async (req, res) => {
-    let session = await paymentsService.initPayment(req.params.id, req.body.plan)
+
+    let userId = req.params.id
+    let subscriptionPlan = req.body.plan
+
+    // Creating a new Stripe Payment Session
+    let session = await paymentsService.initPayment(userId, subscriptionPlan);
+
+    // Creating a new temporary subscription with the session
+    let subscription = await subscriptionsService.CreateTemporarySubscription(session.id);
+
+    // Assigning the temporary session to the user
+    await usersService.updateUser(userId, { subscriptionId: subscription.id })
+
     res.json({ "paymentUrl": session })
 })
 
@@ -61,6 +53,5 @@ module.exports = {
     getUserLatestPayment,
     getUserActivePayment,
     getUserPaymentStatus,
-    createPayment,
     initPayment
 }

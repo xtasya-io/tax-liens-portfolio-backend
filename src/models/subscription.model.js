@@ -33,6 +33,7 @@ Subscription.init(
     status: {
       type: DataTypes.ENUM("temporary", "confirmed")
     },
+    // Stripe sessionId
     sessionId: {
       type: DataTypes.STRING
     }
