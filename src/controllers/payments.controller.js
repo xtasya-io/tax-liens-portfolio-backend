@@ -29,14 +29,20 @@ const getUserPaymentStatus = catchAsync(async (req, res) => {
 
 const createPayment = catchAsync(async (req, res) => {
     let user = await usersService.getUserById(req.body.userId)
-    if (!user) {
-        throw new ApiError(httpStatus.NOT_FOUND, "Could not find user")
-    } else {
-        // let payment = await paymentsService.createPayment(req.body)
-        // if (payment) res.status(httpStatus.CREATED).send()
-        let payment = await paymentsService.createPayment(req.body)
-        if (payment) res.status(200).send(payment)
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user")
+           
+    // Creating the payment session
+    let payment = await paymentsService.createPayment(req.body)
+
+    // Storing the session id in the user to use after payment
+    user = {
+        ...user,
+        sessionId: payment.id
     }
+
+    user.save()
+        
+    res.status(200).send(payment)
 })
 
 const initPayment = catchAsync(async (req, res) => {
