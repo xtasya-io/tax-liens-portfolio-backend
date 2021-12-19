@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../db/connection");
-const User = require("./");
+const User = require("./user.model");
 
 /**
  * @typedef Subscription
