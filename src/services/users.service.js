@@ -114,7 +114,7 @@ const unbanUser = async (userId) => {
 const activateAccount = async (userId) => {
 
     // Getting user by id
-    let user = getUserById(userId)
+    let user = await User.findByPk(userId)
 
     // Throwing error if user do not exist
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
@@ -126,9 +126,6 @@ const activateAccount = async (userId) => {
     if (user.subscriptionId) {
         await subscriptionsService.ConfirmTemporarySubscription(user.subscriptionId)
     }
-
-    // Creating a new subscription
-    let subscription = await subscriptionsService.CreateSubscription()
 
     // Updating the user status to premium
     user = await User.update({ status: "premium" }, {

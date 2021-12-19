@@ -32,7 +32,7 @@ const initPayment = catchAsync(async (req, res) => {
 
     // Checking if the user exists
     let user = await usersService.getUserById(userId);
-    if(!user) throw new ApiError(404, "User not found")
+    if(!user) throw new ApiError(404, "User not found");
 
     // Creating a new Stripe Payment Session
     let session = await paymentsService.initPayment(userId, subscriptionPlan);
@@ -41,14 +41,15 @@ const initPayment = catchAsync(async (req, res) => {
     let subscription = await subscriptionsService.CreateTemporarySubscription(session.id);
 
     // Assigning the temporary session to the user
-    await usersService.updateUser(userId, { subscriptionId: subscription.id })
+    await usersService.updateUser(userId, { subscriptionId: subscription.id });
 
-    res.json({ "paymentUrl": session.url })
+    res.json({ "paymentUrl": session.url });
+    
 })
 
 const getUserLatestPayment = catchAsync(async (req, res) => {
-    let payment = await paymentsService.getUserLatestPayment(req.params.id)
-    res.status(httpStatus.OK).json({ "payment": payment })
+    let payment = await paymentsService.getUserLatestPayment(req.params.id);
+    res.status(httpStatus.OK).json({ "payment": payment });
 })
 
 module.exports = {
