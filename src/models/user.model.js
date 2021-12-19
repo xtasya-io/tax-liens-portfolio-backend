@@ -90,15 +90,14 @@ User.init(
 
         // Subscription
         status: {
-            // ENUM: ['active', 'overdue']
             type: DataTypes.STRING(16)
         },
-        customerId: {
-            type: DataTypes.STRING(32),
-            field: "customer_id"
+        sessionId: {
+            type: DataTypes.STRING(128),
+            field: "session_id"
         },
         subscriptionId: {
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(8),
             field: "subscription_id"
         }
     },
