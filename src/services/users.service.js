@@ -113,27 +113,32 @@ const unbanUser = async (userId) => {
  */
 const activateAccount = async (userId) => {
 
-        // Getting user by id
-        let user = User.findOne({ id: userId })
+    // Getting user by id
+    let user = getUserById(userId)
 
-        // Throwing error if user do not exist
-        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
+    // Throwing error if user do not exist
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Could not find user!")
 
-        // Throwing error if user account is premium
-        if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
+    // Throwing error if user account is premium
+    if (user.status === "premium") throw new ApiError(httpStatus.CONFLICT, "User account is already premium")
 
-        // Creating a new subscription
-        let subscription = await subscriptionsService.CreateSubscription()
+    // Getting user subscription if exists
+    if (user.subscriptionId) {
+        await subscriptionsService.ConfirmTemporarySubscription(user.subscriptionId)
+    }
 
-        // Updating the user status to premium
-        user = await User.update({ status: "premium" }, {
-            where: {
-                id: userId
-            }
-        });
+    // Creating a new subscription
+    let subscription = await subscriptionsService.CreateSubscription()
 
-        // Return the user data
-        return user
+    // Updating the user status to premium
+    user = await User.update({ status: "premium" }, {
+        where: {
+            id: userId
+        }
+    });
+
+    // Return the user data
+    return user
 
 }
 

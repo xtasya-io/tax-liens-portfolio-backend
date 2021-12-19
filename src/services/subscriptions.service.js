@@ -1,4 +1,11 @@
+require("dotenv").config()
+
+const httpStatus = require("http-status");
+const ApiError = require("../utils/ApiError");
 const { Subscription } = require("../models");
+
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 module.exports = {
   /**
@@ -12,33 +19,45 @@ module.exports = {
    * Confirm subscription
    * @returns {Promise<{Subscription>}
    */
-  ConfirmSubscription: async (duration) => {
+  ConfirmTemporarySubscription: async (subscriptionId) => {
+
+    // Getting the subscription by Id
+    let subscription = await Subscription.findOne({ id: subscriptionId })
+    if (!subscription) throw new ApiError(httpStatus.NOT_FOUND, "Could not find the user's subscription")
+    if (subscription.status !== "temporary") throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, "Could not process payment, please contact admin")
+
+    // Getting the payment session data from Stripe API
+    let session = await stripe.sessions.retrieve(
+        subscription.sessionId
+    );
+
+    console.log("================", session)
 
     // Setting dateFrom to today
-    let dateFrom = new Date();
+    // let dateFrom = new Date();
     
-    // Initializing dateTo
-    let dateTo;
+    // // Initializing dateTo
+    // let dateTo;
 
-    switch (duration) {
-        case "month":
-            dateTo = new Date(dateFrom.getTime()+(31*24*60*60*1000))
-            break;
-        case "year":
-            dateTo = new Date(dateFrom.getTime()+(365*24*60*60*1000))
-            break;
-    }
+    // switch (duration) {
+    //     case "month":
+    //         dateTo = new Date(dateFrom.getTime()+(31*24*60*60*1000))
+    //         break;
+    //     case "year":
+    //         dateTo = new Date(dateFrom.getTime()+(365*24*60*60*1000))
+    //         break;
+    // }
 
-    // Creating the new subscription
-    let subscription = Object.assign({}, {
-        dateFrom,
-        dateTo,
-        duration,
-        type: "premium"
-    })
+    // // Creating the new subscription
+    // let subscription = Object.assign({}, {
+    //     dateFrom,
+    //     dateTo,
+    //     duration,
+    //     type: "premium"
+    // })
 
-    // Saving the new subscription
-    return Subscription.create(subscription)
+    // // Saving the new subscription
+    // return Subscription.create(subscription)
 
   },
 
@@ -55,7 +74,7 @@ module.exports = {
     let subscription = Object.assign({}, {
         sessionId,
         dateFrom,
-        type: "temporary",
+        status: "temporary",
     })
 
     // Saving the new subscription
