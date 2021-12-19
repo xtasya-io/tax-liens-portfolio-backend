@@ -30,6 +30,12 @@ Subscription.init(
     type: {
       type: DataTypes.ENUM("premium")
     },
+    status: {
+      type: DataTypes.ENUM("temporary", "confirmed")
+    },
+    sessionId: {
+      type: DataTypes.STRING
+    }
   },
   { sequelize }
 );
