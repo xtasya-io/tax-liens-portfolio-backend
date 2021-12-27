@@ -62,10 +62,6 @@ User.init(
         phone: {
             type: DataTypes.STRING(32)
         },
-        isBanned: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
         // birthDate: {
         //     type: DataTypes.DATE
         // },
@@ -90,6 +86,7 @@ User.init(
 
         // Subscription
         status: {
+            // free, premium, banned
             type: DataTypes.STRING(16)
         },
         subscriptionId: {
