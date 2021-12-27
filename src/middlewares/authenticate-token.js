@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-const httpStatus = require("http-status")
+const httpStatus = require("http-status");
+const { usersService } = require('../services');
 
 module.exports = (req, res, next) => {
 
@@ -10,11 +11,15 @@ module.exports = (req, res, next) => {
         token = token.slice(7, token.length);
     }
 
-    if (!token) return res.sendStatus(httpStatus.FORBIDDEN);
+    if (!token) res.status(httpStatus.FORBIDDEN).send({ message: "No Bearer Token provided"});
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-        if (err) return res.sendStatus(httpStatus.FORBIDDEN);
-        req.user = data;
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
+        if (err) {
+            res.status(httpStatus.FORBIDDEN).send({ message: "Invalid Bearer Token"});
+            return;
+        }
+        let user = await usersService.getUserByEmail(data.email)
+        req.user = user;
         next()
     })
 }
