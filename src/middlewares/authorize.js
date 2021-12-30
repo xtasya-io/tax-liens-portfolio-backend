@@ -1,5 +1,5 @@
 const httpStatus = require("http-status");
-const { usersService, adminsService } = require("../services");
+const { adminsService } = require("../services");
 const ApiError = require("../utils/ApiError");
 
 const DEFAULT_ALLOWED_ROLES = ['client'];
@@ -18,9 +18,8 @@ module.exports.authorize =
             }
 
             if (roles.length === 1 && roles[0] === 'client') {
-                let user = await usersService.getUserById(req.user.id)
 
-                switch (user.status) {
+                switch (req.user.status) {
                     case "banned":
                         throw new ApiError(httpStatus.FORBIDDEN, "User is banned");
                     case "free":
@@ -30,6 +29,34 @@ module.exports.authorize =
                         next();
                 }
             }
+
+            if (roles.length > 1) {
+
+                // Default authorize if it's an admin
+                if (await adminsService.getAdminById(req.user.id)) {
+                    next();
+                    return;
+                } else {
+
+                    // Check user status if not admin
+                    switch (req.user.status) {
+                        case "banned":
+                            throw new ApiError(httpStatus.FORBIDDEN, "User is banned");
+                        case "free":
+                            if (premium) throw new ApiError(httpStatus.FORBIDDEN, "User should make a payment");
+                            next();
+                        default:
+                            next();
+                    }
+
+                }
+
+
+            }
+
+        } else {
+
+            throw new ApiError(httpStatus.NOT_FOUND, "User not found");
 
         }
     }
