@@ -4,70 +4,13 @@ const { Payment, User } = require("../models");
 const ApiError = require('../utils/ApiError');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-/**
- * Get Active Payment of User
- * @param {String} userId
- * @returns {Promise<Payment>}
- */
-const getUserActivePayment = async (userId) => {
-    return Payment.findOne({
-        where: { user: userId, isActive: true }
-    })
-}
-
-/**
- * Get Latest Payment of User
- * @param {String} userId
- * @returns {Promise<Payment>}
- */
-const getUserLatestPayment = async (userId) => {
-    let payments = await Payment.findAndCountAll({
-        where: { user: userId },
-        order: [
-            ['endDate', 'DESC'],
-            ['startDate', 'DESC']
-        ],
-        limit: 1
-    })
-    if (payments.rows.length == 0) throw new ApiError(404, "No payments for the current user")
-    return payments.rows[0]
-}
-
-/**
- * Get Payments of User
- * @param {String} userId
- * @returns {Promise<Payment>}
- */
-const getPaymentsByUser = async (userId) => {
-    return Payment.findAll({
-        where: { user: userId },
-        order: [
-            ['endDate', 'DESC'],
-            ['startDate', 'DESC']
-        ]
-    })
-}
-
-/**
- * Get Payment Status of User
- * @param {String} userId
- * @returns {Boolean}
- */
-const getUserPaymentStatus = async (userId) => {
-    let payment = await (getUserLatestPayment(userId))
-    if (!payment) {
-        return false
-    }
-    let endDate = new Date(payment.endDate)
-    return endDate.getTime() > Date.now()
-}
 
 /**
  * Create a new payment
- * @param {String} userId
+ * @param {String} priceId
  * @returns {Boolean}
  */
-const createPayment = async (userId, priceId) => {
+const createPayment = async (priceId) => {
 
     try {
         // Call to Stripe API to create payment session
@@ -90,45 +33,6 @@ const createPayment = async (userId, priceId) => {
     } catch (error) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error)
     }
-
-}
-
-/**
- * Get all the payments
- * @returns {Promise<Payment[]>}
- */
-const getAllPayments = async () => {
-
-    return Payment.findAll({
-        order: [
-            ['startDate', 'DESC']
-        ],
-        include: [{ model: User }]
-    })
-
-}
-
-/**
- * Get all the payments
- * @returns {Promise<User[]>}
- */
-const markPaymentAsOverdue = async () => {
-
-    let payments = await Payment.findAll({
-        where: { isActive: true },
-        order: [
-            ['startDate', 'DESC']
-        ]
-    })
-
-    Promise.all(payments.map(async (payment) => {
-        if (new Date(payment.endDate) < new Date()) {
-            // if (new Date(payment.endDate) < new Date('2021-11-17T03:24:00')) {
-            payment.setDataValue("isActive", false)
-            console.log('updating payment #', payment.id)
-            await payment.save()
-        }
-    }))
 
 }
 
@@ -163,7 +67,7 @@ const markPaymentAsOverdue = async () => {
     }
 
     // Creating stripe session
-    let payment = await createPayment(userId, priceId)
+    let payment = await createPayment(priceId)
 
     return payment
 
@@ -171,12 +75,6 @@ const markPaymentAsOverdue = async () => {
 
 
 module.exports = {
-    getUserLatestPayment,
-    getUserActivePayment,
-    getPaymentsByUser,
-    getUserPaymentStatus,
-    markPaymentAsOverdue,
     createPayment,
-    getAllPayments,
     initPayment
 }

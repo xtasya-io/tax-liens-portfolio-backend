@@ -31,7 +31,7 @@ Subscription.init(
       type: DataTypes.ENUM("premium")
     },
     status: {
-      type: DataTypes.ENUM("temporary", "confirmed")
+      type: DataTypes.ENUM("temporary", "confirmed", "overdue")
     },
     // Stripe sessionId
     sessionId: {
