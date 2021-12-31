@@ -5,6 +5,7 @@ const { authenticateToken } = require('../middlewares/index')
 const paymentsController = require('../controllers/payments.controller');
 
 router.get("/", usersContoller.getAllUsers);
+router.get("/:id", usersContoller.getUserById);
 router.put("/:id", usersContoller.updateUser);
 router.put("/ban/:id", authenticateToken, usersContoller.banUser);
 router.put("/unban/:id", authenticateToken, usersContoller.unbanUser);
