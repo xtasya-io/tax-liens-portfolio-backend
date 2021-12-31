@@ -22,8 +22,8 @@ const getUsers = async (filter = {}, attributes = ["id", "firstName", "lastName"
  * @param {Number} userId
  * @returns {Promise<User>}
  */
-const getUserById = async (userId, attributes = ["id", "firstName", "lastName", "email", "phone"]) => {
-    return User.findByPk(userId, { attributes: attributes })
+const getUserById = async (userId) => {
+    return User.findByPk(userId)
 }
 
 /**
