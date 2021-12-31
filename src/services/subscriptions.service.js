@@ -2,9 +2,11 @@ require("dotenv").config()
 
 const httpStatus = require("http-status");
 const ApiError = require("../utils/ApiError");
-const { Subscription } = require("../models");
+// const usersService = require('./users.service');
+const User = require("../models/user.model");
 
 const Stripe = require('stripe');
+const Subscription = require("../models/subscription.model");
 
 module.exports = {
   /**
@@ -12,6 +14,43 @@ module.exports = {
    * @returns {Promise<{count: number, rows: TaxLien[]}>}
    */
   getAllSubscriptions: async () => {
+  },
+
+  /**
+   * Get All Subscriptions list
+   * @param id
+   * @returns {Promise<Subscription>}
+   */
+  getSubscriptionById: async (id) => {
+    let subscription = await Subscription.findByPk(id)
+
+    if (!subscription) throw new ApiError(httpStatus.NOT_FOUND, "Subscription not found")
+
+    return subscription
+  },   
+
+  /**
+   * Get All Subscriptions list
+   * @param userId
+   * @returns {Promise<Subscription>}
+   */
+  getSubscriptionByUserId: async (userId) => {
+
+    // Get user by userId
+    const user = await User.findByPk(userId);
+
+    // Get susbcription data
+    let subscriptionId = user.subscriptionId
+
+    // Throw an error if user have no subscriptionId
+    if (!subscriptionId) throw new ApiError(httpStatus.NOT_FOUND, "No subscription associated to this user")
+
+    let subscription = await Subscription.findByPk(subscriptionId)
+
+    if (!subscription) throw new ApiError(httpStatus.NOT_FOUND, "Subscription not found")
+
+    return subscription;
+
   },
 
   /**

@@ -1,5 +1,5 @@
 const httpStatus = require("http-status");
-const { adminsService } = require("../services");
+const { adminService } = require("../services");
 const ApiError = require("../utils/ApiError");
 
 const DEFAULT_ALLOWED_ROLES = ['client'];
@@ -10,7 +10,7 @@ module.exports.authorize =
         if (req.user) {
 
             if (roles.length === 1 && roles[0] === 'admin') {
-                if (await adminsService.getAdminById(req.user.id)) {
+                if (await adminService.getAdminById(req.user.id)) {
                     next();
                     return;
                 }
@@ -23,7 +23,7 @@ module.exports.authorize =
                     case "banned":
                         throw new ApiError(httpStatus.FORBIDDEN, "User is banned");
                     case "free":
-                        if (premium) throw new ApiError(httpStatus.FORBIDDEN, "User should make a payment");
+                        if (premium) throw new ApiError(httpStatus.FORBIDDEN, "User does not have a subscription");
                         next();
                     default:
                         next();
@@ -33,7 +33,7 @@ module.exports.authorize =
             if (roles.length > 1) {
 
                 // Default authorize if it's an admin
-                if (await adminsService.getAdminById(req.user.id)) {
+                if (await adminService.getAdminById(req.user.id)) {
                     next();
                     return;
                 } else {
