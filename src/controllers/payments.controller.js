@@ -9,10 +9,6 @@ const initPayment = catchAsync(async (req, res) => {
     let userId = req.params.id
     let subscriptionPlan = req.body.plan
 
-    // Checking if the user exists
-    let user = await usersService.getUserById(userId);
-    if(!user) throw new ApiError(404, "User not found");
-
     // Creating a new Stripe Payment Session
     let session = await paymentsService.initPayment(userId, subscriptionPlan);
 
