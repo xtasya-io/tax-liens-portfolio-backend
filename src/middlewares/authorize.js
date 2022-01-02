@@ -24,7 +24,6 @@ module.exports.authorize =
                         res.status(httpStatus.FORBIDDEN).send("User is banned");
                     case "free":
                         if (premium) res.status(httpStatus.FORBIDDEN).send("User does not have a subscription");
-                        next();
                     default:
                         next();
                 }
@@ -47,9 +46,7 @@ module.exports.authorize =
                         default:
                             next();
                     }
-
                 }
-
 
             }
 
