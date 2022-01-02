@@ -9,7 +9,6 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 const getUserById = catchAsync(async (req, res) => {
     let user = await usersService.getUserById(req.params.id);
-    console.log("ZA USERR ======>", user )
     res.status(httpStatus.OK).send(user)
 })
 

@@ -7,8 +7,6 @@ const DEFAULT_ALLOWED_ROLES = ['client'];
 module.exports.authorize = 
     (roles = DEFAULT_ALLOWED_ROLES, premium = false) => async (req, res, next) => {
 
-        console.log("req.user ====>", req.user)
-
         if (req.user) {
 
             if (roles.length === 1 && roles[0] === 'admin') {
