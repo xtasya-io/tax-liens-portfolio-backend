@@ -18,7 +18,7 @@ const initPayment = catchAsync(async (req, res) => {
     // Assigning the temporary session to the user
     await usersService.updateUser(userId, { subscriptionId: subscription.id });
 
-    res.status(httpStatus.TEMPORARY_REDIRECT).json({ "paymentUrl": session.url });
+    res.status(httpStatus.CREATED).json({ "paymentUrl": session.url });
     
 })
 
