@@ -9,6 +9,7 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 const getUserById = catchAsync(async (req, res) => {
     let user = await usersService.getUserById(req.params.id);
+    console.log("ZA USERR ======>", user )
     res.status(httpStatus.OK).send(user)
 })
 
@@ -32,4 +33,4 @@ const activateAccount = catchAsync(async (req, res) => {
     res.status(204).send(user);
 })
 
-module.exports = { getAllUsers, getUserById,    updateUser, banUser, unbanUser, activateAccount }
+module.exports = { getAllUsers, getUserById, updateUser, banUser, unbanUser, activateAccount }

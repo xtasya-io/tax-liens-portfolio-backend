@@ -23,13 +23,13 @@ const getUsers = async (filter = {}, attributes = ["id", "firstName", "lastName"
  * @returns {Promise<User>}
  */
 const getUserById = async (userId) => {
-    return User.findByPk(userId)
+    return User.findOne({ where: { id: userId } }, { attributes: { exclude: ['password'] } })
 }
 
 /**
  * Update User By id
  * @param {Number} userId
- * @param {Object} data
+ * @param {Object} userData
  * @returns {Promise<User>}
  */
 const updateUser = async (userId, userData) => {

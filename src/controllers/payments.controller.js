@@ -13,7 +13,7 @@ const initPayment = catchAsync(async (req, res) => {
     let session = await paymentsService.initPayment(userId, subscriptionPlan);
 
     // Creating a new temporary subscription with the session
-    let subscription = await subscriptionsService.CreateTemporarySubscription(session.id);
+    let subscription = await subscriptionsService.createTemporarySubscription(session.id);
 
     // Assigning the temporary session to the user
     await usersService.updateUser(userId, { subscriptionId: subscription.id });

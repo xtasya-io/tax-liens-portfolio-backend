@@ -7,6 +7,8 @@ const DEFAULT_ALLOWED_ROLES = ['client'];
 module.exports.authorize = 
     (roles = DEFAULT_ALLOWED_ROLES, premium = false) => async (req, res, next) => {
 
+        console.log("req.user ====>", req.user)
+
         if (req.user) {
 
             if (roles.length === 1 && roles[0] === 'admin') {
@@ -21,9 +23,9 @@ module.exports.authorize =
 
                 switch (req.user.status) {
                     case "banned":
-                        throw new ApiError(httpStatus.FORBIDDEN, "User is banned");
+                        res.status(httpStatus.FORBIDDEN).send("User is banned");
                     case "free":
-                        if (premium) throw new ApiError(httpStatus.FORBIDDEN, "User does not have a subscription");
+                        if (premium) res.status(httpStatus.FORBIDDEN).send("User does not have a subscription");
                         next();
                     default:
                         next();
@@ -41,10 +43,9 @@ module.exports.authorize =
                     // Check user status if not admin
                     switch (req.user.status) {
                         case "banned":
-                            throw new ApiError(httpStatus.FORBIDDEN, "User is banned");
+                            res.status(httpStatus.FORBIDDEN).send("User is banned");
                         case "free":
-                            if (premium) throw new ApiError(httpStatus.FORBIDDEN, "User should make a payment");
-                            next();
+                            if (premium) res.status(httpStatus.FORBIDDEN).send("User should make a payment");
                         default:
                             next();
                     }
@@ -55,8 +56,6 @@ module.exports.authorize =
             }
 
         } else {
-
-            throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-
+            res.status(httpStatus.NOT_FOUND).send("User not found");
         }
     }

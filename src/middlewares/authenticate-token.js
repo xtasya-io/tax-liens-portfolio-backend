@@ -5,7 +5,8 @@ const { usersService, adminService } = require('../services');
 module.exports = (req, res, next) => {
 
     const authHeader = req.headers['authorization'];
-    const token = (authHeader && authHeader.split(' ')[1]) || req.headers['x-access-token'] || req.query.token;
+    const token = (authHeader && authHeader.split(' ')[1]) 
+    // || req.headers['x-access-token'] || req.query.token;
 
     if (!token) res.status(httpStatus.FORBIDDEN).send({ message: "No Bearer Token provided"});
 

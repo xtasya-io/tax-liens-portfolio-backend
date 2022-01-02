@@ -12,17 +12,20 @@ router.get(
     usersContoller.getAllUsers
 );
 
-router.route("/:id", authenticateToken)
-    // Get user data by id
-    .get(
-        authorize(["client", "admin"]),
-        usersContoller.getUserById
-    )
+router.get(
+    "/:id",
+    authenticateToken,
+    authorize(["client", "admin"]),
+    usersContoller.getUserById
+)
+
     // Update user by id
-    .put(
-        authorize(["client", "admin"]),
-        usersContoller.updateUser
-    )
+router.put(
+    "/:id",
+    authenticateToken,
+    authorize(["client", "admin"]),
+    usersContoller.updateUser
+)
 
 // Ban / unBan users
 

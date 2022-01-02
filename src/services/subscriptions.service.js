@@ -114,7 +114,7 @@ module.exports = {
    * Create Temporary subscription
    * @returns {Promise<{Subscription>}
    */
-   CreateTemporarySubscription: async (sessionId) => {
+   createTemporarySubscription: async (sessionId) => {
 
     // Setting dateFrom to today
     let dateFrom = new Date();
