@@ -33,10 +33,10 @@ const getUserById = async (userId) => {
  * @returns {Promise<User>}
  */
 const updateUser = async (userId, userData) => {
-    return User.update(
-        userData,
-        { where: { id: userId } }
-    )
+    let user = await getUserById(userId)
+    user.set(userData)
+    await user.save()
+    return user
 }
 
 /**

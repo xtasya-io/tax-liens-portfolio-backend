@@ -19,7 +19,7 @@ router.get(
     usersContoller.getUserById
 )
 
-    // Update user by id
+// Update user by id
 router.put(
     "/:id",
     authenticateToken,
